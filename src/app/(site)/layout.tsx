@@ -8,6 +8,7 @@ import NewsletterModal from "@/components/NewsletterModal";
 import BreakingToast from "@/components/BreakingToast";
 import Analytics from "@/components/Analytics";
 import PointerFx from "@/components/fx/PointerFx";
+import PageWipe from "@/components/fx/PageWipe";
 import { getFirstBreakingArticle } from "@/lib/data/db-articles";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
@@ -92,6 +93,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NewsletterModal />
         <Analytics />
         <PointerFx />
+        <PageWipe />
       </body>
     </html>
   );

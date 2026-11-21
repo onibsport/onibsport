@@ -9,6 +9,7 @@ import Crest from "@/components/ui/Crest";
 import LeagueCrest from "@/components/ui/LeagueCrest";
 import LiveDot from "@/components/ui/LiveDot";
 import LiveMinute from "@/components/ui/LiveMinute";
+import ScoreBox from "@/components/ui/ScoreBox";
 import SwipeRow from "@/components/ui/SwipeRow";
 import { cn } from "@/lib/utils";
 import type { Scoreboard } from "@/lib/live/footballData";
@@ -27,9 +28,7 @@ function Tile({ f, today, viewer }: { f: Fixture; today: string; viewer: Viewer 
           <Crest name={name} src={crest} size={20} />
           <span className="truncate">{name}</span>
         </span>
-        {f.status !== "upcoming" && (
-          <span className={cn("font-display text-[26px] font-black leading-none tabular-nums", live ? "led-glow text-orange" : lost ? "text-white/55" : "text-white")}>{score}</span>
-        )}
+        {f.status !== "upcoming" && <ScoreBox score={score} live={live} muted={lost} className="text-[24px]" />}
       </div>
     );
   };
@@ -88,12 +87,18 @@ export default function ScoresStrip({ initial }: { initial: Scoreboard }) {
       <div className="relative mx-auto max-w-[1400px] px-4 sm:px-6">
         <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 id="scores-strip-title" className="font-display text-4xl font-black leading-none">
+            <h2 id="scores-strip-title" className="flex items-center gap-3 font-display text-4xl font-black leading-none">
+              <span aria-hidden="true" className="bc-mark" />
               Match centre
             </h2>
             <p className="mt-1.5 text-sm text-white/60">
               {formatDate(today, { weekday: "long", day: "numeric", month: "long" }, viewer)}
-              {live > 0 && <span className="ml-2 font-semibold text-orange">{live} live now</span>}
+              {live > 0 && (
+                <span className="bc-tags ml-2 align-middle">
+                  <span className="bg-orange text-ink">Live</span>
+                  <span className="bg-white text-ink">{live} now</span>
+                </span>
+              )}
               {quietDay && <span className="ml-2">No matches today. Latest results and next kick-offs.</span>}
             </p>
           </div>

@@ -102,6 +102,9 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
           </div>
         </div>
 
+        {/* The broadcast wipe sweeps across each time a new story comes up. */}
+        {!reduce && <div key={`wipe-${selected}`} aria-hidden="true" className="bc-wipe" />}
+
         {/* Story-style progress segments */}
         <div className="pointer-events-none absolute inset-x-5 top-5 z-[2] flex gap-1.5 sm:inset-x-7 sm:top-7" aria-hidden="true">
           {articles.map((a, i) => (
@@ -133,17 +136,23 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
               transition={{ duration: 0.35 }}
               className="max-w-3xl"
             >
-              <div className="flex flex-wrap items-center gap-2">
-                {current.isBreaking && <span className="rounded-md bg-orange px-2.5 py-1 text-xs font-bold text-ink">Breaking</span>}
-                {currentCategory && (
-                  <span className="rounded-md px-2.5 py-1 text-xs font-bold" style={{ background: theme.tint, color: theme.onTint }}>
-                    {currentCategory.name}
+              <div className="flex flex-wrap items-center gap-3">
+                {(current.isBreaking || currentCategory) && (
+                  <span className="bc-tags">
+                    {current.isBreaking && <span className="bg-orange text-ink">Breaking</span>}
+                    {currentCategory && <span style={{ background: theme.tint, color: theme.onTint }}>{currentCategory.name}</span>}
                   </span>
                 )}
                 <TimeAgo iso={current.publishedAt} className="text-xs font-medium text-white/70" />
               </div>
               {/* Each word rises out of its own line, one after another. */}
-              <h2 aria-label={current.title} className="mt-3 font-display text-[36px] font-black leading-[0.94] text-white sm:text-[52px] xl:text-[64px]">
+              {/* A lower-third plate slides open, then each word rises into it. */}
+              <h2
+                aria-label={current.title}
+                className="mt-3 font-display text-[32px] font-black uppercase leading-[1.1] tracking-[0.005em] text-white sm:text-[46px] xl:text-[56px]"
+              >
+                <span className="bc-plate-wrap block">
+                <span className="bc-plate">
                 {current.title.split(/\s+/).map((word, i) => (
                   <span key={i} aria-hidden="true" className="-my-[0.1em] mr-[0.22em] inline-block overflow-hidden py-[0.1em] align-bottom">
                     <motion.span
@@ -156,6 +165,8 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
                     </motion.span>
                   </span>
                 ))}
+                </span>
+                </span>
               </h2>
               <motion.p
                 initial={reduce ? false : { opacity: 0, y: 14 }}

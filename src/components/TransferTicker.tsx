@@ -8,7 +8,7 @@ export default function TransferTicker({ articles }: { articles: Article[] }) {
   return (
     <div className="border-y border-gold/40 bg-gold text-ink">
       <div className="mx-auto flex h-12 max-w-[1400px] items-stretch">
-        <Link href="/category/transfers" className="flex shrink-0 items-center bg-ink px-4 font-display text-lg font-extrabold text-gold hover:text-white">
+        <Link href="/category/transfers" className="bc-cut flex shrink-0 items-center bg-ink px-4 font-display text-lg font-extrabold uppercase tracking-wide text-gold hover:text-white">
           Transfer watch
         </Link>
         <Marquee label="Transfer headlines" seconds={Math.max(36, articles.length * 9)} controlClassName="border-l border-ink/15 text-ink/70 hover:text-ink">
