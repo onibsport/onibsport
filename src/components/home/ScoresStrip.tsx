@@ -87,11 +87,13 @@ export default function ScoresStrip({ initial }: { initial: Scoreboard }) {
       <div className="relative mx-auto max-w-[1400px] px-4 sm:px-6">
         <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 id="scores-strip-title" className="flex items-center gap-3 font-display text-4xl font-black leading-none">
-              <span aria-hidden="true" className="bc-mark" />
-              Match centre
+            <h2 id="scores-strip-title" className="font-display text-[30px] font-black leading-none sm:text-[40px]">
+              <span className="bc-strap sd-wipe-in">
+                <span aria-hidden="true" className="bc-strap-tab" />
+                <span className="bc-strap-plate bg-white text-ink">Match centre</span>
+              </span>
             </h2>
-            <p className="mt-1.5 text-sm text-white/60">
+            <p className="mt-3 text-sm text-white/60">
               {formatDate(today, { weekday: "long", day: "numeric", month: "long" }, viewer)}
               {live > 0 && (
                 <span className="bc-tags ml-2 align-middle">
