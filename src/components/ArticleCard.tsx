@@ -97,7 +97,7 @@ export default function ArticleCard({
 
   if (size === "overlay") {
     return (
-      <Link href={href} data-tilt="5" data-spot="" data-cursor="Read story" className={cn("group shine relative block overflow-hidden rounded-2xl bg-night", className)}>
+      <Link href={href} data-tilt="5" data-spot="" data-cursor="Read story" className={cn("group bc-hover-wipe relative block overflow-hidden rounded-2xl bg-night", className)}>
         <div className="relative aspect-[4/5] w-full sm:aspect-[3/4]">
           <NewsImage
             src={article.image} focus={article.imageFocus}

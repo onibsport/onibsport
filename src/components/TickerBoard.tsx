@@ -22,7 +22,7 @@ export default function TickerBoard({ initial }: { initial: Scoreboard }) {
       <div className="mx-auto flex h-10 max-w-[1400px] items-stretch">
         <Link
           href="/live-scores"
-          className="flex shrink-0 items-center gap-2 bg-orange px-3 font-display text-[15px] font-extrabold tracking-wide text-ink transition-colors hover:bg-gold sm:px-4"
+          className="bc-cut flex shrink-0 items-center gap-2 bg-orange px-3 font-display text-[15px] font-extrabold tracking-wide text-ink transition-colors hover:bg-gold sm:px-4"
         >
           {liveCount > 0 ? <LiveDot className="[&>span]:bg-ink" /> : null}
           {liveCount > 0 ? `${liveCount} live` : "Scores"}
