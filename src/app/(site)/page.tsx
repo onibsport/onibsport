@@ -1,4 +1,5 @@
-import HeroCarousel from "@/components/HeroCarousel";
+import HeroProgramme from "@/components/HeroProgramme";
+import ProgrammePages from "@/components/home/ProgrammePages";
 import ArticleCard from "@/components/ArticleCard";
 import SectionHeading from "@/components/SectionHeading";
 import TrendingSidebar from "@/components/TrendingSidebar";
@@ -8,7 +9,6 @@ import YouTubeSection from "@/components/YouTubeSection";
 import AdSlot from "@/components/AdSlot";
 import ScoresStrip from "@/components/home/ScoresStrip";
 import LeagueDesk, { type DeskData } from "@/components/home/LeagueDesk";
-import LeagueHubs from "@/components/home/LeagueHubs";
 import EditorsPicks from "@/components/home/EditorsPicks";
 import WeekInPictures from "@/components/home/WeekInPictures";
 import {
@@ -22,6 +22,11 @@ import { getPublishedVideos } from "@/lib/data/db-videos";
 import { CategorySlug } from "@/lib/types";
 
 export const revalidate = 60;
+
+/** Today's date for the programme masthead, in Lagos time. */
+function editionDate() {
+  return new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "Africa/Lagos" }).format(new Date());
+}
 
 const DESK_LEAGUES: CategorySlug[] = ["premier-league", "la-liga", "serie-a", "bundesliga", "champions-league", "npfl"];
 
@@ -69,9 +74,7 @@ export default async function Home() {
       <h1 className="sr-only">Onibsport — football news, transfers and live scores</h1>
 
       {heroSlides.length > 0 && (
-        <div className="mx-auto max-w-[1400px] px-4 pb-10 pt-5 sm:px-6">
-          <HeroCarousel articles={heroSlides} />
-        </div>
+        <HeroProgramme articles={heroSlides.concat(latest.filter((a) => !heroSlugs.has(a.slug))).slice(0, 5)} dateLabel={editionDate()} />
       )}
 
       <ScoresStrip initial={scoreboard} />
@@ -106,7 +109,7 @@ export default async function Home() {
 
       {desks.length > 0 && <LeagueDesk desks={desks} />}
 
-      <LeagueHubs />
+      <ProgrammePages desks={desks} />
 
       <EditorsPicks articles={editorsPicks} />
 

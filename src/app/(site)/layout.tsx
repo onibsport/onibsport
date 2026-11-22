@@ -8,6 +8,7 @@ import NewsletterModal from "@/components/NewsletterModal";
 import BreakingToast from "@/components/BreakingToast";
 import Analytics from "@/components/Analytics";
 import PointerFx from "@/components/fx/PointerFx";
+import TicketIntro from "@/components/fx/TicketIntro";
 import { getFirstBreakingArticle } from "@/lib/data/db-articles";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
@@ -70,7 +71,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const siteJsonLd = [organizationJsonLd(), websiteJsonLd()];
 
   return (
-    <html lang="en" className={`${shoulders.variable} ${archivo.variable} h-full antialiased`}>
+    <html lang="en" className={`${shoulders.variable} ${archivo.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col">
         {siteJsonLd.map((data, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
@@ -81,6 +82,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           Skip to content
         </a>
+        <TicketIntro dateLabel={new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "Africa/Lagos" }).format(new Date())} />
         <div className="scroll-progress" aria-hidden="true" />
         <LiveTicker />
         <Header />

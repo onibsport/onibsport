@@ -637,3 +637,114 @@ h3 {
 html[data-scrolled] .site-header {
   box-shadow: 0 14px 34px -22px rgb(18 10 51 / 0.45);
 }
+
+/* ==========================================================================
+   Direction C: Matchday Programme. The printed programme sold outside the
+   ground: paper, giant type, kit-colour pages, ticket details.
+   ========================================================================== */
+
+/* Paper with a faint print grain. */
+.programme-paper {
+  background-color: var(--color-paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.07  0 0 0 0 0.04  0 0 0 0 0.2  0 0 0 0.06 0'/></filter><rect width='160' height='160' filter='url(%23p)'/></svg>");
+}
+
+/* ---------- Ticket intro (first page of a visit) ---------- */
+.ticket-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: rgb(18 10 51 / 0.92);
+  animation: ticket-bg-out 0.45s ease-out 1.05s both;
+}
+html.intro-seen .ticket-intro {
+  display: none;
+}
+.ticket {
+  display: flex;
+  width: min(560px, 88vw);
+  filter: drop-shadow(0 30px 40px rgb(0 0 0 / 0.45));
+  animation: ticket-drop 0.55s cubic-bezier(0.22, 1.2, 0.36, 1) both;
+}
+.ticket-main,
+.ticket-stub {
+  position: relative;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.ticket-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 24px;
+  border-radius: 14px 0 0 14px;
+  border-right: 3px dashed rgb(18 10 51 / 0.35);
+  animation: ticket-tear-left 0.55s cubic-bezier(0.7, 0, 0.25, 1) 0.8s both;
+}
+.ticket-stub {
+  width: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-orange);
+  border-radius: 0 14px 14px 0;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 0.9;
+  animation: ticket-tear-right 0.55s cubic-bezier(0.7, 0, 0.25, 1) 0.8s both;
+}
+.ticket-kicker,
+.ticket-date {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(18 10 51 / 0.6);
+}
+.ticket-name {
+  font-size: clamp(44px, 9vw, 72px);
+  font-weight: 900;
+  line-height: 0.85;
+}
+.ticket-name span {
+  color: #b85c00;
+}
+@keyframes ticket-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-60px) rotate(-6deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-2deg);
+  }
+}
+@keyframes ticket-tear-left {
+  to {
+    transform: translate(-36vw, 18px) rotate(-14deg);
+    opacity: 0;
+  }
+}
+@keyframes ticket-tear-right {
+  to {
+    transform: translate(36vw, -12px) rotate(18deg);
+    opacity: 0;
+  }
+}
+@keyframes ticket-bg-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket-intro {
+    display: none;
+  }
+}
