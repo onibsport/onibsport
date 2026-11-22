@@ -5,6 +5,8 @@ import { getCategory } from "@/lib/data/categories";
 import { leagueTheme } from "@/lib/leagues";
 import TimeAgo from "@/components/ui/TimeAgo";
 import LiveClock from "@/components/ui/LiveClock";
+import PrintedWordmark from "@/components/fx/gsap/PrintedWordmark";
+import SplitReveal from "@/components/fx/gsap/SplitReveal";
 import NewsImage from "@/components/ui/NewsImage";
 import ViewTransition, { storyPhotoName } from "@/components/fx/ViewTransition";
 
@@ -39,13 +41,7 @@ export default function HeroProgramme({ articles, dateLabel }: { articles: Artic
             <LiveClock className="whitespace-nowrap text-[13px] sm:text-[15px]" />
           </span>
         </div>
-        <p
-          aria-hidden="true"
-          className="load-in select-none text-center font-display text-[20.5vw] font-black leading-[0.78] tracking-[-0.035em] lg:text-[17.6rem]"
-          style={{ "--i": 1 } as React.CSSProperties}
-        >
-          ONIB<span className="text-orange-deep">SPORT</span>
-        </p>
+        <PrintedWordmark className="select-none text-center font-display text-[20.5vw] font-black leading-[0.78] tracking-[-0.035em] lg:text-[17.6rem]" />
         <div className="border-t-2 border-ink" />
 
         <div className="grid gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-12 lg:py-10">
@@ -80,7 +76,7 @@ export default function HeroProgramme({ articles, dateLabel }: { articles: Artic
                 {category?.name} <span className="mx-1">/</span> <TimeAgo iso={cover.publishedAt} />
               </p>
               <h2 className="mt-1 font-display text-[40px] font-black leading-[0.88] tracking-[-0.01em] sm:text-[62px] lg:text-[76px]">
-                <span className="link-draw">{cover.title}</span>
+                <SplitReveal>{cover.title}</SplitReveal>
               </h2>
               <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-ink/75">{cover.dek}</p>
             </div>

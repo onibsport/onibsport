@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import StampText from "@/components/fx/gsap/StampText";
 
 /**
  * Direction C section title: big programme type in capitals over a dashed
@@ -30,7 +31,7 @@ export default function SectionHeading({
         <h2 id={id} className={cn("flex items-center gap-3 font-display text-[40px] font-black uppercase leading-[0.85] sm:text-[60px]", dark ? "text-white" : "text-ink")}>
           {color && <span aria-hidden="true" className="h-9 w-9 shrink-0 rotate-45 sm:h-11 sm:w-11" style={{ background: color }} />}
           <span className="-my-1 block overflow-hidden py-1">
-            <span className="sd-rise block">{title}</span>
+            <StampText className="block">{title}</StampText>
           </span>
         </h2>
         {href && (

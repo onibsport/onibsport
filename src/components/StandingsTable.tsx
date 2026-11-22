@@ -1,6 +1,7 @@
 import { StandingRow } from "@/lib/types";
 import Crest from "@/components/ui/Crest";
 import { cn } from "@/lib/utils";
+import CountUp from "@/components/reactbits/CountUp";
 import { resolveZones, zonesFor, type TableZone } from "@/lib/tableZones";
 
 type Ranked = StandingRow & { points: number; goalDiff: number; position: number };
@@ -192,7 +193,9 @@ export function MiniTable({ rows, limit = 6, accent = "#2d1b69" }: { rows: Stand
             </th>
             <td className="py-2 text-center tabular-nums text-ink/70">{r.played}</td>
             <td className="py-2 text-center tabular-nums text-ink/70">{gd(r.goalDiff)}</td>
-            <td className="py-2 text-right font-display text-base font-black tabular-nums text-ink">{r.points}</td>
+            <td className="py-2 text-right font-display text-base font-black tabular-nums text-ink">
+              <CountUp to={r.points} duration={1.2} />
+            </td>
           </tr>
         ))}
       </tbody>

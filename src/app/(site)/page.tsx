@@ -1,5 +1,6 @@
 import HeroProgramme from "@/components/HeroProgramme";
 import ProgrammePages from "@/components/home/ProgrammePages";
+import EditionBand from "@/components/home/EditionBand";
 import ArticleCard from "@/components/ArticleCard";
 import SectionHeading from "@/components/SectionHeading";
 import TrendingSidebar from "@/components/TrendingSidebar";
@@ -112,6 +113,8 @@ export default async function Home() {
       {desks.length > 0 && <LeagueDesk desks={desks} />}
 
       <ProgrammePages desks={desks} />
+
+      <EditionBand />
 
       <EditorsPicks articles={editorsPicks} />
 

@@ -9,6 +9,7 @@ import BreakingToast from "@/components/BreakingToast";
 import Analytics from "@/components/Analytics";
 import PointerFx from "@/components/fx/PointerFx";
 import TicketIntro from "@/components/fx/TicketIntro";
+import SmoothScroll from "@/components/fx/SmoothScroll";
 import { getFirstBreakingArticle } from "@/lib/data/db-articles";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
@@ -94,6 +95,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NewsletterModal />
         <Analytics />
         <PointerFx />
+        <SmoothScroll />
       </body>
     </html>
   );
