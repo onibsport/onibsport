@@ -67,6 +67,7 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
             // A story waiting for its time shows its schedule; a live one keeps its time unless changed.
             publishAt: article.status === "PUBLISHED" && article.publishedAt && article.publishedAt > new Date() ? article.publishedAt.toISOString() : "",
             categoryId: article.categoryId,
+            alsoIn: article.alsoIn,
           }}
         />
       </div>

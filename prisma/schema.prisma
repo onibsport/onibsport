@@ -46,6 +46,8 @@ model Article {
   status           ArticleStatus @default(DRAFT)
   categoryId       String
   category         Category      @relation(fields: [categoryId], references: [id])
+  /// Other league pages the story also shows on, as category slugs (its main hub is categoryId).
+  alsoIn           String[]      @default([])
   /// When the story goes live. A PUBLISHED story with a future date is scheduled.
   publishedAt      DateTime?
   /// When the breaking-news alert went out, so it is only sent once.

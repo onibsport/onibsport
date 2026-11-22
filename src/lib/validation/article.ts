@@ -34,6 +34,8 @@ export const articleInputSchema = z.object({
     .optional()
     .or(z.literal("")),
   categoryId: z.string().min(1),
+  /** Other league pages the story also shows on (category slugs). */
+  alsoIn: z.array(z.string().max(60)).max(12).optional(),
 });
 
 export type ArticleInput = z.infer<typeof articleInputSchema>;

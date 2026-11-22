@@ -1,4 +1,7 @@
 // Site-wide brand/config constants. Update these with your real handles.
+/** The byline on new stories and AI Desk drafts until the editor picks another writer. */
+export const DEFAULT_AUTHOR = "Lucky Onimisi";
+
 export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@onibsport";
 
 /** Leave a link blank ("") to hide that network from the footer and the /links hub. */

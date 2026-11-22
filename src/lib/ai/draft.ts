@@ -29,6 +29,7 @@ const DraftSchema = z.object({
   body: z.string().describe("The full article in the Onibsport markdown subset, blocks separated by a blank line."),
   tags: z.array(z.string()).describe("4-6 specific tags: clubs, players, competition, topic."),
   category: z.enum(CATEGORY_SLUGS).describe("The Onibsport hub this story belongs in."),
+  alsoIn: z.array(z.enum(CATEGORY_SLUGS)).describe("Other hubs the story clearly also belongs on (0-2), not including category."),
   imageAlt: z.string().describe("Alt text for the lead photo: who/what is shown and where, under 125 characters."),
   keyPoints: z.array(z.string()).describe("Exactly 3 key points for the box at the top of the story, each a short factual sentence under 110 characters."),
   social: SocialSchema(),
@@ -53,6 +54,8 @@ export interface GeneratedDraft {
   body: string;
   tags: string;
   category: CategorySlug;
+  /** Other hubs it also shows on. */
+  alsoIn?: CategorySlug[];
   imageAlt: string;
   /** The "Key points" box, one point per line. */
   keyPoints: string;
@@ -100,6 +103,7 @@ Also return
 - dek: one sentence under 160 characters that works as the meta description.
 - tags: 4-6 specific tags (club names, players, competition, and a topic such as "Transfers").
 - category: the single best Onibsport hub for the story. Use a league hub when the story is mainly about that competition or one of its clubs, transfers for transfer news (signings, bids, contracts, exits), nigeria-football for the Super Eagles, Super Falcons and Nigerian players, african-football for African football and CAF: AFCON, the CAF Champions League and Confederation Cup, CAF awards, African World Cup qualifiers, other African national teams, leagues and clubs, and African players' stories (a story mainly about Nigeria's teams or a Nigerian player stays in nigeria-football), and world-football for everything else: general football news, other leagues, global stars and stories that fit no other hub.
+- alsoIn: other hubs the story clearly also belongs on, usually none and at most 2, never the category itself. For example a CAF event held in Nigeria is nigeria-football plus african-football; a Nigerian player's transfer is transfers plus nigeria-football.
 - imageAlt: alt text describing a likely lead photo for this story, under 125 characters, without "image of".
 - keyPoints: exactly 3 key points for a box at the top of the story, for readers in a hurry. Each is one short factual sentence under 110 characters, taken from the article, in the order a reader needs them. No hype, no questions.`;
 
@@ -283,6 +287,7 @@ export async function generateDraft(source: SourceItem, internalLinks: InternalL
     body: draft.body.trim(),
     tags: draft.tags.map((t) => t.trim()).filter(Boolean).join(", "),
     category: draft.category,
+    alsoIn: [...new Set(draft.alsoIn ?? [])].filter((s) => s !== draft!.category).slice(0, 2),
     imageAlt: draft.imageAlt.trim(),
     keyPoints: (draft.keyPoints ?? [])
       .map((p) => p.replace(/^[-•*]\s*/, "").trim())
