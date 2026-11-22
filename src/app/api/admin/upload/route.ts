@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
+import { r2Configured, uploadToR2 } from "@/lib/r2";
 
 const MAX_BYTES = 8 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
@@ -14,11 +15,12 @@ function blobConfigured() {
 }
 
 export async function POST(request: NextRequest) {
-  if (!blobConfigured()) {
+  // Cloudflare R2 when it's set up; Vercel Blob otherwise.
+  if (!r2Configured() && !blobConfigured()) {
     return NextResponse.json(
       {
         error:
-          "Image uploads aren't connected here. In Vercel, open Storage, connect a Blob store to this project, and make sure its variables are enabled for this environment; then redeploy (or run `vercel env pull` for local development). Until then, paste an image URL or an existing /placeholders path instead.",
+          "Image uploads aren't connected here. Add the Cloudflare R2 settings (R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, NEXT_PUBLIC_R2_PUBLIC_URL) in Vercel, then redeploy. Until then, paste an image URL instead.",
       },
       { status: 501 }
     );
@@ -37,6 +39,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    if (r2Configured()) {
+      return NextResponse.json({ url: await uploadToR2(file, "articles") });
+    }
     const blob = await put(`articles/${Date.now()}-${file.name}`, file, {
       access: "public",
       addRandomSuffix: true,
