@@ -5,6 +5,8 @@ import { shiftDate as shift } from "@/lib/time";
 import LiveScoresView, { type ScoresView } from "@/components/LiveScoresView";
 import AdSlot from "@/components/AdSlot";
 import AutoRefresh from "@/components/AutoRefresh";
+import ProgrammePageHeader from "@/components/ProgrammePageHeader";
+import LiveClock from "@/components/ui/LiveClock";
 
 const description =
   "Live football scores, results and fixtures for any date across the Premier League, La Liga, Serie A, Bundesliga, Champions League and the NPFL.";
@@ -63,20 +65,20 @@ export default async function LiveScoresPage({ searchParams }: { searchParams: P
 
   return (
     <>
-      <section className="relative overflow-hidden bg-night px-4 pb-12 pt-12 text-white sm:px-6">
-        <div className="pitch-lines pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
-        <div className="relative mx-auto max-w-5xl">
-          <h1 className="font-display text-6xl font-black leading-[0.85] sm:text-8xl">Scores &amp; fixtures</h1>
-          <p className="mt-4 max-w-xl text-lg text-white/70">
-            Live scores, full-time results and upcoming kick-offs. Pick any date to see who played and who&apos;s up next. Times are in your own time zone.
-          </p>
-        </div>
-      </section>
+      <ProgrammePageHeader
+        kicker="Match centre"
+        title="Scores & fixtures"
+        ghost="Live"
+        meta={<LiveClock className="whitespace-nowrap text-[13px] sm:text-[15px]" />}
+        intro="Live scores, full-time results and upcoming kick-offs. Pick any date to see who played and who's up next. Times are in your own time zone."
+      />
       {/* Keep today's scores and the results/fixtures views current while the page is open. */}
       {(view !== "date" || (date >= shift(today, -1) && date <= shift(today, 1))) && <AutoRefresh />}
+      <div className="programme-paper">
       <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <LiveScoresView fixtures={fixtures} nearby={nearby} categories={scoreCategories} pickedDate={pickedDate} today={today} league={league} view={view} />
         <AdSlot placement="scores" className="mt-12" />
+      </div>
       </div>
     </>
   );

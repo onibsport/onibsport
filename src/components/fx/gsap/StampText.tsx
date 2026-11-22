@@ -18,7 +18,7 @@ export default function StampText({ children, className }: { children: string; c
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const split = SplitText.create(el, { type: "chars" });
+    const split = SplitText.create(el, { type: "words,chars" });
     const tween = gsap.from(split.chars, {
       scale: 1.9,
       opacity: 0,

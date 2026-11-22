@@ -9,7 +9,8 @@ import { gsap } from "gsap";
  * stamped. On the first visit it waits for the ticket intro to tear away.
  * GSAP; nothing moves for readers who prefer reduced motion.
  */
-export default function PrintedWordmark({ className }: { className?: string }) {
+/** `delay` overrides the wait (seconds), e.g. on pages without the ticket intro. */
+export default function PrintedWordmark({ className, delay }: { className?: string; delay?: number }) {
   const ref = useRef<HTMLParagraphElement>(null);
 
   useLayoutEffect(() => {
@@ -25,11 +26,11 @@ export default function PrintedWordmark({ className }: { className?: string }) {
         duration: 0.75,
         ease: "back.out(1.8)",
         stagger: 0.055,
-        delay: firstVisit ? 1.35 : 0.15,
+        delay: delay ?? (firstVisit ? 1.35 : 0.15),
       });
     }, el);
     return () => ctx.revert();
-  }, []);
+  }, [delay]);
 
   const letters = (word: string, extra?: string) =>
     word.split("").map((ch, i) => (

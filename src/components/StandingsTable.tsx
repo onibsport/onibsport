@@ -59,7 +59,7 @@ export default function StandingsTable({
   const bandFor = (position: number) => bands.find((z) => position >= z.from && position <= z.to);
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-line">
+    <div className="overflow-hidden bg-white ring-2 ring-ink">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[560px] text-sm">
           <caption className="sr-only">League table, ranked by points then goal difference</caption>

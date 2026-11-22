@@ -17,6 +17,7 @@ import HubIntro from "@/components/league/HubIntro";
 import HubPortal from "@/components/league/HubPortal";
 import TransferTimeline from "@/components/league/TransferTimeline";
 import { breadcrumbJsonLd } from "@/lib/seo";
+import SectionHeading from "@/components/SectionHeading";
 
 export const revalidate = 60;
 
@@ -116,23 +117,28 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           {intro}
         </HubPortal>
       ) : (
-        <section className="relative overflow-hidden px-4 pb-14 pt-14 sm:px-6 sm:pt-20" style={{ background: theme.deep }}>
-          <div className="pitch-lines pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
-          <div
-            className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full opacity-30 blur-3xl"
-            style={{ background: theme.tint }}
+        /* The league's page of the programme, printed in its kit colour with its crest letters set huge behind. */
+        <section className="relative overflow-hidden px-4 pb-14 pt-10 sm:px-6 sm:pt-14" style={{ background: theme.deep }}>
+          <span
             aria-hidden="true"
-          />
+            className="pointer-events-none absolute -right-6 -top-10 select-none font-display text-[260px] font-black leading-none opacity-[0.12] sm:-right-10 sm:text-[440px]"
+            style={{ color: theme.tint }}
+          >
+            {theme.crest}
+          </span>
           <div className="relative">{intro}</div>
         </section>
       )}
 
       {sections.length > 1 && (
-        <nav aria-label={`${category.name} sections`} className="border-b border-line bg-white">
+        <nav aria-label={`${category.name} sections`} className="programme-paper border-b-2 border-ink">
           <ul className="no-scrollbar mx-auto flex h-14 max-w-[1400px] items-center gap-2 overflow-x-auto px-4 sm:px-6">
             {sections.map((s) => (
               <li key={s.href} className="shrink-0">
-                <a href={s.href} className="rounded-full px-4 py-2 text-sm font-bold text-ink/70 transition-colors hover:bg-paper hover:text-ink">
+                <a
+                  href={s.href}
+                  className="inline-flex border-2 border-ink px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.08em] text-ink transition-colors hover:bg-ink hover:text-paper"
+                >
                   {s.label}
                 </a>
               </li>
@@ -141,73 +147,77 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         </nav>
       )}
 
-      <div id="latest" className="mx-auto max-w-[1400px] scroll-mt-32 px-4 py-12 sm:px-6">
-        <div className={hasMatches ? "grid gap-10 lg:grid-cols-[minmax(0,1fr)_440px]" : "grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px]"}>
-          <div>
-            {articles.length === 0 ? (
-              <div className="rounded-2xl bg-white p-8 ring-1 ring-line">
-                <h2 className="font-display text-3xl font-black text-ink">No {category.name} stories yet</h2>
-                <p className="mt-2 text-muted">New stories appear here as soon as they&apos;re published. Meanwhile, catch up on the rest of the site.</p>
-                <Link href="/" className="mt-5 inline-flex rounded-full bg-night px-5 py-2.5 text-sm font-bold text-white hover:bg-indigo">
-                  Back to the front page
-                </Link>
-              </div>
-            ) : (
-              <>
-                {lead && <ArticleCard article={lead} size="large" priority />}
-                {gridArticles.length > 0 && (
-                  <div className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2">
-                    {gridArticles.map((article) => (
-                      <ArticleCard key={article.slug} article={article} />
-                    ))}
-                  </div>
-                )}
-                {riverArticles.length > 0 && (
-                  <div className="mt-12 divide-y divide-line border-t border-line">
-                    {riverArticles.map((article) => (
-                      <div key={article.slug} className="py-6">
-                        <ArticleCard article={article} size="row" />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
+      <div className="programme-paper text-ink">
+        <div id="latest" className="mx-auto max-w-[1400px] scroll-mt-32 px-4 py-12 sm:px-6">
+          <div className={hasMatches ? "grid gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-0" : "grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-0"}>
+            <div className="min-w-0 lg:border-r-2 lg:border-dashed lg:border-ink/25 lg:pr-10">
+              <SectionHeading title="Latest" color={theme.deep} className="mb-10" />
+              {articles.length === 0 ? (
+                <div className="bg-white p-8 shadow-[6px_6px_0_var(--color-ink)] ring-2 ring-ink">
+                  <h2 className="font-display text-3xl font-black uppercase">No {category.name} stories yet</h2>
+                  <p className="mt-2 text-muted">New stories appear here as soon as they&apos;re published. Meanwhile, catch up on the rest of the site.</p>
+                  <Link
+                    href="/"
+                    className="mt-5 inline-flex border-2 border-ink bg-ink px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-paper transition-colors hover:bg-transparent hover:text-ink"
+                  >
+                    Back to the front page
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  {lead && <ArticleCard article={lead} size="large" priority />}
+                  {gridArticles.length > 0 && (
+                    <div className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2">
+                      {gridArticles.map((article) => (
+                        <div key={article.slug} className="border-t-2 border-dashed border-ink/25 pt-5">
+                          <ArticleCard article={article} />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {riverArticles.length > 0 && (
+                    <div className="mt-12 divide-y-2 divide-dashed divide-ink/20 border-t-2 border-ink">
+                      {riverArticles.map((article) => (
+                        <div key={article.slug} className="py-7">
+                          <ArticleCard article={article} size="row" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+
+            <aside className="min-w-0 space-y-6 lg:pl-10">
+              {hasMatches ? (
+                <section id="match-centre" aria-labelledby="match-centre-title" className="scroll-mt-32">
+                  <SectionHeading id="match-centre-title" title="Match centre" className="mb-6" />
+                  <LeagueDataTabs
+                    league={category.slug}
+                    fixtures={fixtures}
+                    standings={standings}
+                    scorers={scorers}
+                    showLeague={category.slug === "world-football"}
+                    accent={theme.deep}
+                  />
+                </section>
+              ) : (
+                <TrendingSidebar articles={articles.slice(0, 6)} title={`More ${category.shortName}`} />
+              )}
+              <AdSlot placement="hub-sidebar" />
+            </aside>
           </div>
-
-          <aside className="space-y-6">
-            {hasMatches ? (
-              <section id="match-centre" aria-labelledby="match-centre-title" className="scroll-mt-32">
-                <h2 id="match-centre-title" className="mb-4 font-display text-4xl font-black text-ink">
-                  Match centre
-                </h2>
-                <LeagueDataTabs
-                  league={category.slug}
-                  fixtures={fixtures}
-                  standings={standings}
-                  scorers={scorers}
-                  showLeague={category.slug === "world-football"}
-                  accent={theme.deep}
-                />
-              </section>
-            ) : (
-              <TrendingSidebar articles={articles.slice(0, 6)} title={`More ${category.shortName}`} />
-            )}
-            <AdSlot placement="hub-sidebar" />
-          </aside>
         </div>
+
+        {slug === "transfers" && articles.length >= 3 && <TransferTimeline articles={articles} />}
+
+        {hasTable && (
+          <section id="table" aria-labelledby="table-title" className="mx-auto max-w-[1400px] scroll-mt-32 px-4 pb-14 pt-6 sm:px-6">
+            <SectionHeading id="table-title" title={`${category.shortName} table`} color={theme.deep} className="mb-8" />
+            <StandingsTable rows={standings!} accent={theme.deep} league={category.slug} />
+          </section>
+        )}
       </div>
-
-      {slug === "transfers" && articles.length >= 3 && <TransferTimeline articles={articles} />}
-
-      {hasTable && (
-        <section id="table" aria-labelledby="table-title" className="mx-auto max-w-[1400px] scroll-mt-32 px-4 pb-6 pt-6 sm:px-6">
-          <h2 id="table-title" className="mb-5 font-display text-4xl font-black text-ink sm:text-5xl">
-            {category.name} table
-          </h2>
-          <StandingsTable rows={standings!} accent={theme.deep} league={category.slug} />
-        </section>
-      )}
     </>
   );
 }

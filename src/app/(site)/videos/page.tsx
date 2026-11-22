@@ -4,6 +4,7 @@ import { getPublishedVideos } from "@/lib/data/db-videos";
 import { YOUTUBE_CHANNEL_URL } from "@/lib/config";
 import VideoGallery from "@/components/VideoGallery";
 import AdSlot from "@/components/AdSlot";
+import ProgrammePageHeader from "@/components/ProgrammePageHeader";
 
 export const revalidate = 300;
 
@@ -21,27 +22,29 @@ export default async function VideosPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-night px-4 pb-12 pt-12 text-white sm:px-6">
-        <div className="pitch-stripes pointer-events-none absolute inset-0" aria-hidden="true" />
-        <div className="relative mx-auto flex max-w-[1400px] flex-wrap items-end justify-between gap-6">
-          <div>
-            <h1 className="font-display text-6xl font-black leading-[0.85] sm:text-8xl">Watch</h1>
-            <p className="mt-4 max-w-xl text-lg text-white/70">{description}</p>
-          </div>
+      <ProgrammePageHeader
+        kicker="Onibsport TV"
+        title="Watch"
+        ghost="Play"
+        meta="Highlights / reaction / analysis"
+        intro={description}
+        aside={
           <a
             href={YOUTUBE_CHANNEL_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-ink transition-colors hover:bg-orange"
+            className="flex items-center gap-2 border-2 border-white bg-white px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-ink shadow-[4px_4px_0_var(--color-orange)] transition-colors hover:border-orange hover:bg-orange"
           >
             <YoutubeLogo size={18} weight="fill" className="text-[#ff0033]" aria-hidden="true" />
             Subscribe on YouTube
           </a>
-        </div>
-      </section>
+        }
+      />
+      <div className="programme-paper">
       <div className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
         <VideoGallery videos={videos} />
         <AdSlot placement="videos" className="mt-14" />
+      </div>
       </div>
     </>
   );

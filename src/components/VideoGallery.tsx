@@ -19,7 +19,8 @@ export default function VideoGallery({ videos }: { videos: SiteVideo[] }) {
           const source = playSource(video);
           const card = (
             <>
-              <span className="relative block aspect-video overflow-hidden rounded-2xl bg-night-2">
+              <span className={`block bg-white p-2 shadow-[6px_6px_0_var(--color-ink)] ring-2 ring-ink transition-transform duration-500 group-hover:rotate-0 ${i % 2 ? "rotate-[0.8deg]" : "rotate-[-0.8deg]"}`}>
+              <span className="relative block aspect-video overflow-hidden bg-night-2">
                 <NewsImage
                   src={video.thumbnail}
                   alt=""
@@ -29,13 +30,15 @@ export default function VideoGallery({ videos }: { videos: SiteVideo[] }) {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute inset-0 bg-gradient-to-t from-night/60 to-transparent" />
+                <span className="absolute left-0 top-3 bg-ink px-2.5 py-1 font-display text-sm font-black uppercase tracking-wide text-white">Reel {String(i + 1).padStart(2, "0")}</span>
                 <span className="absolute inset-0 grid place-items-center">
                   <span className="grid h-14 w-14 place-items-center rounded-full bg-orange text-ink shadow-[0_0_0_10px_rgb(247_148_29/0.25)] transition-transform duration-300 group-hover:scale-110">
                     <Play size={22} weight="fill" />
                   </span>
                 </span>
               </span>
-              <span className="mt-3 block font-display text-2xl font-black leading-[1.05] text-ink">{video.title}</span>
+              </span>
+              <span className="mt-5 block border-t-2 border-dashed border-ink/25 pt-4 font-display text-2xl font-black leading-[1.05] text-ink"><span className="link-draw">{video.title}</span></span>
               {video.description && <span className="mt-1.5 line-clamp-2 block text-sm text-muted">{video.description}</span>}
               {!source && <span className="mt-1 block text-xs font-semibold text-muted">Opens YouTube</span>}
             </>

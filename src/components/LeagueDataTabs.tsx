@@ -45,7 +45,7 @@ export function DayGroups({ fixtures, showLeague = false }: { fixtures: Fixture[
 
 function ScorersTable({ scorers, accent }: { scorers: TopScorer[]; accent: string }) {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-line">
+    <div className="overflow-hidden bg-white ring-2 ring-ink">
       <table className="w-full text-sm">
         <caption className="sr-only">Top scorers this season</caption>
         <thead>
@@ -175,7 +175,7 @@ export default function LeagueDataTabs({
       )}
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div role="tablist" aria-label="Match centre" className="flex gap-1 rounded-full bg-white p-1 ring-1 ring-line">
+        <div role="tablist" aria-label="Match centre" className="flex gap-1 bg-white p-1 ring-2 ring-ink">
           {tabs
             .filter((t) => t.show)
             .map((t) => (
@@ -193,14 +193,14 @@ export default function LeagueDataTabs({
                   setDate("");
                 }}
                 className={cn(
-                  "relative cursor-pointer rounded-full px-4 py-2 text-sm font-bold transition-colors",
+                  "relative cursor-pointer px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] transition-colors",
                   tab === t.id && !dayFixtures ? "text-white" : "text-ink/65 hover:text-ink"
                 )}
               >
                 {tab === t.id && !dayFixtures && (
                   <motion.span
                     layoutId={`${baseId}-pill`}
-                    className="absolute inset-0 rounded-full"
+                    className="absolute inset-0"
                     style={{ background: accent }}
                     transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }}
                   />

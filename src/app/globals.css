@@ -845,3 +845,52 @@ html.intro-seen .ticket-intro {
   right: -11px;
   clip-path: inset(0 50% 0 0);
 }
+
+/* ---------- Programme story page ---------- */
+/* Drop cap on the opening paragraph, in display type. */
+.story-programme > p:first-of-type::first-letter {
+  float: left;
+  margin: 0.06em 0.12em 0 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 4.6em;
+  line-height: 0.78;
+  color: var(--color-ink);
+}
+.story-programme h2 {
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 2.1rem;
+  line-height: 0.95;
+  padding-bottom: 0.35em;
+  border-bottom: 2px dashed rgb(18 10 51 / 0.25);
+}
+.story-programme blockquote {
+  position: relative;
+  border-left: 0;
+  border-top: 2px solid var(--color-ink);
+  border-bottom: 2px solid var(--color-ink);
+  padding: 1.1em 0 1em 2.4em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+.story-programme blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: 0;
+  top: 0.12em;
+  font-size: 3.2em;
+  line-height: 1;
+  color: var(--color-orange);
+}
+.story-programme li::marker {
+  color: var(--color-ink);
+}
+
+/* Ticket notches centred on the side, for short tickets (the /links buttons). */
+.ticket-card.ticket-mid::before,
+.ticket-card.ticket-mid::after {
+  top: calc(50% - 9px);
+}
