@@ -66,11 +66,13 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
   const theme = leagueTheme(current.category);
 
   return (
+    <div className="bg-night">
     <section
       aria-roledescription="carousel"
       aria-label="Top stories"
       data-parallax=""
-      className="grain relative overflow-hidden bg-night text-white"
+      data-spot=""
+      className="cinema-recede grain relative overflow-hidden bg-[#07041a] text-white [--spot-color:rgb(255_244_214_/_0.08)] [--spot-size:640px]"
       onMouseEnter={() => setHeld(true)}
       onMouseLeave={() => setHeld(false)}
       onFocusCapture={() => setHeld(true)}
@@ -88,7 +90,7 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
               aria-hidden={i !== selected}
             >
               <Link href={`/article/${article.slug}`} tabIndex={i === selected ? 0 : -1} data-cursor="Read story" className="group block">
-                <div className="relative h-[min(86svh,760px)] min-h-[560px] w-full overflow-hidden lg:min-h-[640px]">
+                <div className="relative h-[min(90svh,820px)] min-h-[600px] w-full overflow-hidden lg:min-h-[660px]">
                   {/* The photo drifts against the pointer, and grows into the lead photo of the article when the story is opened. */}
                   <ViewTransition name={storyPhotoName(article.slug)} share="morph" default="none">
                     <div className="parallax-layer absolute inset-0">
@@ -100,19 +102,25 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
                         priority={i === 0}
                         sizes="100vw"
                         className={cn(
-                          "object-cover transition-transform ease-out",
-                          i === selected && !reduce ? "scale-100 duration-[7000ms]" : "scale-[1.08] duration-0"
+                          "object-cover brightness-[0.72] saturate-[0.9] transition-transform ease-out",
+                          i === selected && !reduce ? "scale-100 duration-[7000ms]" : "scale-110 duration-0"
                         )}
                       />
                     </div>
                   </ViewTransition>
-                  <div className="absolute inset-0 bg-gradient-to-t from-night via-night/45 to-night/10" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-night/80 via-night/20 to-transparent" />
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_20%,transparent_0%,rgb(7_4_26_/_0.35)_55%,rgb(7_4_26_/_0.92)_100%)]" />
+                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#07041a] via-[#07041a]/70 to-transparent" />
                 </div>
               </Link>
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Floodlights sweeping over the pitch. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
+        <span className="cinema-beam left-[-14%]" style={{ "--beam-time": "13s", rotate: "-10deg" } as React.CSSProperties} />
+        <span className="cinema-beam right-[-14%]" style={{ "--beam-time": "16s", "--beam": "rgb(41 171 226 / 0.18)", rotate: "10deg" } as React.CSSProperties} />
       </div>
 
       {/* The broadcast wipe crosses each time a new story comes up. */}
@@ -152,27 +160,23 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
                 )}
                 <TimeAgo iso={current.publishedAt} className="text-xs font-semibold text-white/75" />
               </div>
-              {/* A lower-third plate slides open, then each word rises into it. */}
+              {/* Big floodlit headline: each word rises with a slight turn. */}
               <h2
                 aria-label={current.title}
-                className="mt-3 font-display text-[34px] font-black uppercase leading-[1.08] tracking-[0.005em] text-white sm:text-[52px] lg:text-[64px] xl:text-[72px]"
+                className="mt-4 font-display text-[40px] font-black leading-[0.9] text-white [text-shadow:0_4px_40px_rgb(0_0_0_/_0.5)] sm:text-[60px] lg:text-[78px]"
               >
-                <span className="bc-plate-wrap block">
-                  <span className="bc-plate">
-                    {current.title.split(/\s+/).map((word, i) => (
-                      <span key={i} aria-hidden="true" className="-my-[0.1em] mr-[0.22em] inline-block overflow-hidden py-[0.1em] align-bottom">
-                        <motion.span
-                          className="inline-block"
-                          initial={reduce ? false : { y: "110%" }}
-                          animate={{ y: 0 }}
-                          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: 0.12 + i * 0.045 }}
-                        >
-                          {word}
-                        </motion.span>
-                      </span>
-                    ))}
+                {current.title.split(/\s+/).map((word, i) => (
+                  <span key={i} aria-hidden="true" className="-my-[0.1em] mr-[0.2em] inline-block overflow-hidden py-[0.1em] align-bottom">
+                    <motion.span
+                      className="inline-block"
+                      initial={reduce ? false : { y: "115%", rotate: 4 }}
+                      animate={{ y: 0, rotate: 0 }}
+                      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.12 + i * 0.05 }}
+                    >
+                      {word}
+                    </motion.span>
                   </span>
-                </span>
+                ))}
               </h2>
               <motion.p
                 initial={reduce ? false : { opacity: 0, y: 14 }}
@@ -269,5 +273,6 @@ export default function HeroCarousel({ articles }: { articles: Article[] }) {
         </div>
       </div>
     </section>
+    </div>
   );
 }

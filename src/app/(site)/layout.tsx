@@ -9,7 +9,8 @@ import BreakingToast from "@/components/BreakingToast";
 import Analytics from "@/components/Analytics";
 import PointerFx from "@/components/fx/PointerFx";
 import PageWipe from "@/components/fx/PageWipe";
-import BroadcastIntro from "@/components/fx/BroadcastIntro";
+import LightsOnIntro from "@/components/fx/LightsOnIntro";
+import SmoothScroll from "@/components/fx/SmoothScroll";
 import { getFirstBreakingArticle } from "@/lib/data/db-articles";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
@@ -83,7 +84,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           Skip to content
         </a>
-        <BroadcastIntro />
+        <LightsOnIntro />
         <div className="scroll-progress" aria-hidden="true" />
         <LiveTicker />
         <Header />
@@ -96,6 +97,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Analytics />
         <PointerFx />
         <PageWipe />
+        <SmoothScroll />
       </body>
     </html>
   );

@@ -8,7 +8,7 @@ import YouTubeSection from "@/components/YouTubeSection";
 import AdSlot from "@/components/AdSlot";
 import ScoresStrip from "@/components/home/ScoresStrip";
 import LeagueDesk, { type DeskData } from "@/components/home/LeagueDesk";
-import LeagueHubs from "@/components/home/LeagueHubs";
+import ProgrammePages from "@/components/home/ProgrammePages";
 import EditorsPicks from "@/components/home/EditorsPicks";
 import WeekInPictures from "@/components/home/WeekInPictures";
 import {
@@ -104,7 +104,7 @@ export default async function Home() {
 
       {desks.length > 0 && <LeagueDesk desks={desks} />}
 
-      <LeagueHubs />
+      <ProgrammePages desks={desks} />
 
       <EditorsPicks articles={editorsPicks} />
 
