@@ -1,4 +1,4 @@
-import HeroCarousel from "@/components/HeroCarousel";
+import HeroCinema from "@/components/HeroCinema";
 import ArticleCard from "@/components/ArticleCard";
 import SectionHeading from "@/components/SectionHeading";
 import TrendingSidebar from "@/components/TrendingSidebar";
@@ -69,9 +69,7 @@ export default async function Home() {
       <h1 className="sr-only">Onibsport — football news, transfers and live scores</h1>
 
       {heroSlides.length > 0 && (
-        <div className="mx-auto max-w-[1400px] px-4 pb-10 pt-5 sm:px-6">
-          <HeroCarousel articles={heroSlides} />
-        </div>
+        <HeroCinema articles={heroSlides} />
       )}
 
       <ScoresStrip initial={scoreboard} />

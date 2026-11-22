@@ -8,6 +8,8 @@ import NewsletterModal from "@/components/NewsletterModal";
 import BreakingToast from "@/components/BreakingToast";
 import Analytics from "@/components/Analytics";
 import PointerFx from "@/components/fx/PointerFx";
+import LightsOnIntro from "@/components/fx/LightsOnIntro";
+import SmoothScroll from "@/components/fx/SmoothScroll";
 import { getFirstBreakingArticle } from "@/lib/data/db-articles";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
@@ -70,7 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const siteJsonLd = [organizationJsonLd(), websiteJsonLd()];
 
   return (
-    <html lang="en" className={`${shoulders.variable} ${archivo.variable} h-full antialiased`}>
+    <html lang="en" className={`${shoulders.variable} ${archivo.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col">
         {siteJsonLd.map((data, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
@@ -81,6 +83,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           Skip to content
         </a>
+        <LightsOnIntro />
         <div className="scroll-progress" aria-hidden="true" />
         <LiveTicker />
         <Header />
@@ -92,6 +95,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NewsletterModal />
         <Analytics />
         <PointerFx />
+        <SmoothScroll />
       </body>
     </html>
   );
