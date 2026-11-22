@@ -6,6 +6,7 @@ export type CategorySlug =
   | "champions-league"
   | "nigeria-football"
   | "npfl"
+  | "african-football"
   | "transfers"
   | "world-football";
 
