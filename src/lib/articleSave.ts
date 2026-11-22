@@ -41,6 +41,7 @@ export function articleData(data: ArticleInput, existing?: Pick<Article, "publis
     featuredVideoUrl: data.featuredVideoUrl || null,
     status: data.status,
     categoryId: data.categoryId,
+    alsoIn: [...new Set(data.alsoIn ?? [])],
     publishedAt: publishedAt(data, existing),
   };
 }

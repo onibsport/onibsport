@@ -21,6 +21,9 @@ import NewsImage from "@/components/ui/NewsImage";
 import TimeAgo from "@/components/ui/TimeAgo";
 import BreakingAlerts from "@/components/BreakingAlerts";
 import { cn } from "@/lib/utils";
+import { leagueTheme } from "@/lib/leagues";
+import LiveClock from "@/components/ui/LiveClock";
+import PrintedWordmark from "@/components/fx/gsap/PrintedWordmark";
 
 /**
  * The link-in-bio hub: one link for every social bio, with buttons for the
@@ -75,14 +78,15 @@ export default async function LinksPage({ searchParams }: { searchParams: Promis
     return `${base}${base.includes("?") ? "&" : "?"}${sp}${hash ? `#${hash}` : ""}`;
   };
 
+  /** Each button is a ticket: a coloured stub with the icon, a perforation, then the label. */
   const buttons = [
     {
       href: track("/"),
       label: "Latest News",
       sub: "Breaking stories, transfers and match reports",
       Icon: Newspaper,
-      tone: "bg-orange text-ink hover:bg-gold",
-      iconTone: "bg-ink/10 text-ink",
+      stub: "bg-orange text-ink",
+      body: "bg-orange text-ink",
       external: false,
     },
     {
@@ -90,8 +94,8 @@ export default async function LinksPage({ searchParams }: { searchParams: Promis
       label: "Watch Full Videos",
       sub: "Highlights, reactions and analysis on YouTube",
       Icon: YoutubeLogo,
-      tone: "bg-white text-ink hover:bg-paper",
-      iconTone: "bg-[#ff0000] text-white",
+      stub: "bg-[#ff0000] text-white",
+      body: "bg-white text-ink",
       external: true,
     },
     {
@@ -99,72 +103,76 @@ export default async function LinksPage({ searchParams }: { searchParams: Promis
       label: "Live Scores",
       sub: "Scores, fixtures and league tables",
       Icon: SoccerBall,
-      tone: "bg-white/10 text-white ring-1 ring-white/15 hover:bg-white/15",
-      iconTone: "bg-white/10 text-orange",
+      stub: "bg-orange text-ink",
+      body: "bg-night text-white",
       external: false,
     },
   ];
 
   const socials = SOCIALS.filter((s) => SOCIAL_LINKS[s.key]);
+  const today = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "Africa/Lagos" }).format(new Date());
 
   return (
-    // The page sets its own night background and white text: the site-wide body style would otherwise paint it paper-white.
-    <div data-spot="" className="grain relative min-h-screen overflow-hidden bg-night text-white [--spot-color:rgb(247_148_29_/_0.1)] [--spot-size:520px]">
-      <div className="pitch-lines pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
-      {/* Stadium floodlights sweeping slowly across the night. */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <span className="beam left-[-12%]" style={{ "--from": "-6deg", "--to": "-22deg", "--beam-time": "11s" } as React.CSSProperties} />
-        <span
-          className="beam right-[-12%]"
-          style={{ "--from": "8deg", "--to": "24deg", "--beam-time": "13s", "--beam-color": "rgb(41 171 226 / 0.2)" } as React.CSSProperties}
-        />
-      </div>
-      <div
-        className="pointer-events-none absolute -top-40 left-1/2 h-[420px] w-[620px] -translate-x-1/2 rounded-full bg-orange/20 blur-[120px]"
-        aria-hidden="true"
-      />
-
-      <main className="relative z-[2] mx-auto flex max-w-[480px] flex-col px-4 pb-12 pt-10 sm:pt-14">
-        <header className="flex flex-col items-center text-center">
-          <span className="load-in relative grid h-[108px] w-[108px] place-items-center" style={{ "--i": 0 } as React.CSSProperties}>
-            <span className="ring-turn absolute inset-0 rounded-full" aria-hidden="true" />
-            <span className="ring-turn absolute inset-0 rounded-full opacity-60 blur-xl" aria-hidden="true" />
-            <span className="relative grid h-24 w-24 place-items-center rounded-full bg-white">
-              <Image src="/logo.png" alt="" width={586} height={514} priority className="h-16 w-auto" />
-            </span>
+    // Paper, like the matchday programme the main site is printed as.
+    <div className="programme-paper relative min-h-screen overflow-hidden text-ink">
+      <main className="relative z-[2] mx-auto flex max-w-[480px] flex-col px-4 pb-12 pt-5">
+        {/* Masthead line, as on the front page. */}
+        <div
+          className="load-in flex items-center justify-between gap-3 whitespace-nowrap border-b-2 border-ink pb-2 text-[10px] font-bold uppercase tracking-[0.1em]"
+          style={{ "--i": 0 } as React.CSSProperties}
+        >
+          <span>Matchday edition</span>
+          <span className="flex items-center gap-2">
+            {today}
+            <LiveClock className="whitespace-nowrap text-[12px]" />
           </span>
-          <h1 className="load-in mt-5 font-display text-5xl font-black leading-none tracking-tight" style={{ "--i": 1 } as React.CSSProperties}>
-            Onib<span className="text-orange">sport</span>
+        </div>
+
+        <header className="flex flex-col items-center text-center">
+          <span
+            className="load-in mt-7 grid h-20 w-20 rotate-[-6deg] place-items-center border-2 border-ink bg-white shadow-[4px_4px_0_var(--color-ink)]"
+            style={{ "--i": 1 } as React.CSSProperties}
+          >
+            <Image src="/logo.png" alt="" width={586} height={514} priority className="h-12 w-auto" />
+          </span>
+          <h1 className="mt-4 w-full">
+            <span className="sr-only">Onibsport</span>
+            <PrintedWordmark delay={0.2} className="select-none font-display text-[19vw] font-black leading-[0.8] tracking-[-0.03em] min-[480px]:text-[92px]" />
           </h1>
-          <p className="load-in mt-3 max-w-xs text-[15px] leading-relaxed text-white/70" style={{ "--i": 2 } as React.CSSProperties}>
+          <div className="mt-3 w-full border-t-2 border-ink" />
+          <p className="load-in mt-4 max-w-xs text-[15px] leading-relaxed text-ink/70" style={{ "--i": 2 } as React.CSSProperties}>
             Football news, transfers and live scores, from Lagos to London.
           </p>
         </header>
 
-        <nav aria-label="Onibsport links" className="mt-8 space-y-3">
-          {buttons.map(({ href, label, sub, Icon, tone, iconTone, external }, i) => {
+        <nav aria-label="Onibsport links" className="mt-8 space-y-4">
+          {buttons.map(({ href, label, sub, Icon, stub, body, external }, i) => {
             const inner = (
               <>
-                <span className={cn("grid h-12 w-12 shrink-0 place-items-center rounded-xl", iconTone)}>
-                  <Icon size={26} weight="fill" aria-hidden="true" />
+                <span className={cn("grid w-[72px] shrink-0 place-items-center", stub)}>
+                  <Icon size={28} weight="fill" aria-hidden="true" />
                 </span>
-                <span className="min-w-0 flex-1 text-left">
-                  <span className="block font-display text-2xl font-black leading-tight">{label}</span>
-                  <span className="block text-sm opacity-70">{sub}</span>
+                <span className={cn("flex min-w-0 flex-1 items-center gap-3 border-l-2 border-dashed border-current/40 py-3.5 pl-4 pr-5", body)}>
+                  <span className="min-w-0 flex-1 text-left">
+                    <span className="block font-display text-[26px] font-black uppercase leading-none">{label}</span>
+                    <span className="mt-1 block text-[13px] leading-snug opacity-75">{sub}</span>
+                  </span>
+                  {external ? <ArrowUpRight size={20} weight="bold" aria-hidden="true" /> : <ArrowRight size={20} weight="bold" aria-hidden="true" />}
                 </span>
-                {external ? <ArrowUpRight size={20} weight="bold" aria-hidden="true" /> : <ArrowRight size={20} weight="bold" aria-hidden="true" />}
               </>
             );
-            const className = cn("shine relative flex items-center gap-4 overflow-hidden rounded-2xl p-3 pr-5 transition-colors [--glow-color:#ffffff]", tone);
-            const fx = { "data-tilt": "4", "data-glow": "", className };
+            const className = cn(
+              "ticket-card ticket-mid relative flex items-stretch shadow-[5px_5px_0_var(--color-ink)] ring-2 ring-ink transition-transform duration-300 hover:rotate-0 hover:-translate-x-0.5 hover:-translate-y-0.5",
+              i % 2 ? "rotate-[0.8deg]" : "rotate-[-0.8deg]"
+            );
             return (
               <div key={label} className="load-in" style={{ "--i": i + 3 } as React.CSSProperties}>
                 {external ? (
-                  <a href={href} target="_blank" rel="noopener noreferrer" {...fx}>
+                  <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
                     {inner}
                   </a>
                 ) : (
-                  <Link href={href} {...fx}>
+                  <Link href={href} className={className}>
                     {inner}
                   </Link>
                 )}
@@ -173,43 +181,54 @@ export default async function LinksPage({ searchParams }: { searchParams: Promis
           })}
         </nav>
 
-        <div className="load-in mt-4 flex justify-center" style={{ "--i": 6 } as React.CSSProperties}>
-          <BreakingAlerts tone="dark" />
+        <div className="load-in mt-6 flex justify-center" style={{ "--i": 6 } as React.CSSProperties}>
+          <BreakingAlerts />
         </div>
 
         {stories.length > 0 && (
           <section aria-labelledby="just-posted" className="load-in mt-10" style={{ "--i": 7 } as React.CSSProperties}>
-            <h2 id="just-posted" className="flex items-center gap-2 text-sm font-bold text-orange">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-orange" aria-hidden="true" />
-              Just posted
-            </h2>
-            <p className="mt-1 text-sm text-white/55">Saw a story on our page? It&apos;s here.</p>
-            <ul className="mt-4 space-y-2.5">
-              {stories.map((story) => (
-                <li key={story.slug}>
-                  <Link
-                    href={track(`/article/${story.slug}`)}
-                    data-glow=""
-                    data-spot=""
-                    className="group relative flex items-center gap-3 overflow-hidden rounded-2xl bg-white/[0.06] p-2.5 pr-4 ring-1 ring-white/10 transition-colors hover:bg-white/[0.09] [--spot-size:220px]"
-                  >
-                    <span className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-xl bg-white/10">
-                      <NewsImage src={story.image} focus={story.imageFocus} alt="" fill sizes="72px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-xs font-bold text-white/55">
-                        {story.isBreaking ? <span className="text-orange">Breaking</span> : getCategory(story.category)?.name}
+            <div className="flex items-end justify-between gap-3 border-b-2 border-ink pb-2">
+              <h2 id="just-posted" className="font-display text-[34px] font-black uppercase leading-[0.85]">
+                Just posted
+              </h2>
+              <span className="flex items-center gap-1.5 pb-1 text-[10px] font-bold uppercase tracking-[0.14em] text-orange-deep">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-orange" aria-hidden="true" />
+                Live
+              </span>
+            </div>
+            <p className="mt-2 text-sm text-muted">Saw a story on our page? It&apos;s here.</p>
+            <ul className="mt-2 divide-y-2 divide-dashed divide-ink/20">
+              {stories.map((story) => {
+                const theme = leagueTheme(story.category);
+                return (
+                  <li key={story.slug}>
+                    <Link href={track(`/article/${story.slug}`)} className="group flex items-center gap-3.5 py-3.5">
+                      <span className="block shrink-0 p-1" style={{ background: theme.deep }}>
+                        <span className="relative block h-[64px] w-[64px] overflow-hidden">
+                          <NewsImage src={story.image} focus={story.imageFocus} alt="" fill sizes="64px" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                        </span>
                       </span>
-                      <span className="mt-0.5 line-clamp-2 block font-semibold leading-snug text-white group-hover:text-orange">{story.title}</span>
-                      <span className="mt-0.5 block text-xs text-white/45">
-                        <TimeAgo iso={story.publishedAt} />
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-muted">
+                          {story.isBreaking ? <span className="text-orange-deep">Breaking</span> : getCategory(story.category)?.name}
+                          <span className="mx-1.5" aria-hidden="true">
+                            /
+                          </span>
+                          <TimeAgo iso={story.publishedAt} />
+                        </span>
+                        <span className="mt-0.5 line-clamp-2 block font-display text-[19px] font-extrabold leading-[1.05]">
+                          <span className="link-draw">{story.title}</span>
+                        </span>
                       </span>
-                    </span>
-                  </Link>
-                </li>
-              ))}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
-            <Link href={track("/")} className="mt-4 flex items-center justify-center gap-1.5 text-sm font-bold text-white/75 hover:text-white">
+            <Link
+              href={track("/")}
+              className="mt-3 flex items-center justify-center gap-1.5 border-2 border-ink py-3 text-sm font-bold uppercase tracking-wide transition-colors hover:bg-ink hover:text-paper"
+            >
               See all the latest news
               <ArrowRight size={16} weight="bold" aria-hidden="true" />
             </Link>
@@ -218,7 +237,7 @@ export default async function LinksPage({ searchParams }: { searchParams: Promis
 
         {socials.length > 0 && (
           <section aria-labelledby="follow" className="mt-10 text-center">
-            <h2 id="follow" className="text-sm font-bold text-white/55">
+            <h2 id="follow" className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted">
               Follow Onibsport
             </h2>
             <ul className="mt-3 flex flex-wrap justify-center gap-2.5">
@@ -230,7 +249,7 @@ export default async function LinksPage({ searchParams }: { searchParams: Promis
                     rel="noopener noreferrer"
                     aria-label={`Onibsport on ${label}`}
                     data-magnetic="5"
-                    className="grid h-12 w-12 place-items-center rounded-full bg-white/10 transition-colors hover:bg-orange hover:text-ink"
+                    className="grid h-12 w-12 place-items-center border-2 border-ink bg-white transition-colors hover:bg-ink hover:text-paper"
                   >
                     <Icon size={22} weight="fill" aria-hidden="true" />
                   </a>
@@ -240,8 +259,8 @@ export default async function LinksPage({ searchParams }: { searchParams: Promis
           </section>
         )}
 
-        <footer className="mt-12 text-center text-xs text-white/40">
-          <Link href={track("/")} className="hover:text-white/70">
+        <footer className="mt-12 border-t-2 border-dashed border-ink/25 pt-4 text-center text-[11px] font-bold uppercase tracking-[0.16em] text-muted">
+          <Link href={track("/")} className="hover:text-ink">
             onibsport.com
           </Link>
         </footer>

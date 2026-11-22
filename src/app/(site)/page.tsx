@@ -1,4 +1,6 @@
-import HeroCarousel from "@/components/HeroCarousel";
+import HeroProgramme from "@/components/HeroProgramme";
+import ProgrammePages from "@/components/home/ProgrammePages";
+import EditionBand from "@/components/home/EditionBand";
 import ArticleCard from "@/components/ArticleCard";
 import SectionHeading from "@/components/SectionHeading";
 import TrendingSidebar from "@/components/TrendingSidebar";
@@ -8,7 +10,6 @@ import YouTubeSection from "@/components/YouTubeSection";
 import AdSlot from "@/components/AdSlot";
 import ScoresStrip from "@/components/home/ScoresStrip";
 import LeagueDesk, { type DeskData } from "@/components/home/LeagueDesk";
-import LeagueHubs from "@/components/home/LeagueHubs";
 import EditorsPicks from "@/components/home/EditorsPicks";
 import WeekInPictures from "@/components/home/WeekInPictures";
 import {
@@ -22,6 +23,11 @@ import { getPublishedVideos } from "@/lib/data/db-videos";
 import { CategorySlug } from "@/lib/types";
 
 export const revalidate = 60;
+
+/** Today's date for the programme masthead, in Lagos time. */
+function editionDate() {
+  return new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "Africa/Lagos" }).format(new Date());
+}
 
 const DESK_LEAGUES: CategorySlug[] = ["premier-league", "la-liga", "serie-a", "bundesliga", "champions-league", "npfl"];
 
@@ -69,9 +75,7 @@ export default async function Home() {
       <h1 className="sr-only">Onibsport — football news, transfers and live scores</h1>
 
       {heroSlides.length > 0 && (
-        <div className="mx-auto max-w-[1400px] px-4 pb-10 pt-5 sm:px-6">
-          <HeroCarousel articles={heroSlides} />
-        </div>
+        <HeroProgramme articles={heroSlides.concat(latest.filter((a) => !heroSlugs.has(a.slug))).slice(0, 5)} dateLabel={editionDate()} />
       )}
 
       <ScoresStrip initial={scoreboard} />
@@ -81,23 +85,25 @@ export default async function Home() {
       </div>
 
       {river.length > 0 && (
-        <section aria-labelledby="latest-title" className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
+        <section aria-labelledby="latest-title" className="programme-paper">
+          <div className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
           <SectionHeading id="latest-title" title="Latest" href="/search" linkLabel="Search the archive" />
-          <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px]">
-            <div>
+          <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-0">
+            <div className="lg:border-r-2 lg:border-dashed lg:border-ink/25 lg:pr-10">
               {riverLead && <ArticleCard article={riverLead} size="large" />}
-              <div className="mt-10 divide-y divide-line border-t border-line">
+              <div className="mt-12 divide-y-2 divide-dashed divide-ink/20 border-t-2 border-ink">
                 {riverRest.slice(0, 6).map((article) => (
-                  <div key={article.slug} className="py-6">
+                  <div key={article.slug} className="py-7">
                     <ArticleCard article={article} size="row" />
                   </div>
                 ))}
               </div>
             </div>
-            <div className="space-y-6 lg:sticky lg:top-36 lg:self-start">
+            <div className="space-y-6 lg:sticky lg:top-36 lg:self-start lg:pl-10">
               <TrendingSidebar articles={trending} />
               <AdSlot placement="home-sidebar" />
             </div>
+          </div>
           </div>
         </section>
       )}
@@ -106,7 +112,9 @@ export default async function Home() {
 
       {desks.length > 0 && <LeagueDesk desks={desks} />}
 
-      <LeagueHubs />
+      <ProgrammePages desks={desks} />
+
+      <EditionBand />
 
       <EditorsPicks articles={editorsPicks} />
 
@@ -117,12 +125,16 @@ export default async function Home() {
       <WeekInPictures articles={latest} />
 
       {moreStories.length > 0 && (
-        <section aria-labelledby="more-title" className="mx-auto max-w-[1400px] px-4 py-14 sm:px-6">
-          <SectionHeading id="more-title" title="More stories" />
-          <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-            {moreStories.map((article) => (
-              <ArticleCard key={article.slug} article={article} />
-            ))}
+        <section aria-labelledby="more-title" className="programme-paper">
+          <div className="mx-auto max-w-[1400px] px-4 py-14 sm:px-6">
+            <SectionHeading id="more-title" title="More stories" />
+            <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+              {moreStories.map((article) => (
+                <div key={article.slug} className="border-t-2 border-dashed border-ink/25 pt-5">
+                  <ArticleCard article={article} />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}

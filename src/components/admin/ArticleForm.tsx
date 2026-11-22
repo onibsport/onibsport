@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { DEFAULT_AUTHOR } from "@/lib/config";
 import { useRouter } from "next/navigation";
 import {
   TextHTwo,
@@ -90,6 +91,8 @@ export interface ArticleFormValues {
   /** ISO time a published story goes live; blank = now (or keep its current time). */
   publishAt: string;
   categoryId: string;
+  /** Other league pages it also shows on (category slugs). */
+  alsoIn: string[];
 }
 
 function slugify(value: string) {
@@ -156,7 +159,7 @@ export default function ArticleForm({
       coverImage: "",
       shareText: "",
       keyPoints: "",
-      author: "",
+      author: DEFAULT_AUTHOR,
       source: "",
       tags: "",
       isBreaking: false,
@@ -165,6 +168,7 @@ export default function ArticleForm({
       status: "DRAFT",
       publishAt: "",
       categoryId: categories[0]?.id ?? "",
+      alsoIn: [],
     }
   );
   const mounted = useSyncExternalStore(noSubscribe, () => true, () => false);
@@ -367,7 +371,7 @@ export default function ArticleForm({
       imageAlt: parsed.imageAlt || v.imageAlt,
       keyPoints: parsed.keyPoints || v.keyPoints,
       categoryId: category?.id ?? v.categoryId,
-      author: v.author || "Onibsport Desk",
+      author: v.author || DEFAULT_AUTHOR,
       source: handoff?.outlet ?? v.source,
       image: handoff?.image ?? v.image,
       coverImage: handoff?.image ?? v.coverImage,
@@ -404,7 +408,8 @@ export default function ArticleForm({
       const res = await fetch(isEdit ? `/api/admin/articles/${initial!.id}` : "/api/admin/articles", {
         method: isEdit ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        // The main hub is never also an extra one.
+        body: JSON.stringify({ ...values, alsoIn: values.alsoIn.filter((s) => s !== mainSlug) }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -436,6 +441,7 @@ export default function ArticleForm({
   const links = (values.body.match(/\]\((?:https?:\/\/|\/)/g) ?? []).length;
   const externalImage = isExternalImage(values.image) || isExternalImage(values.coverImage);
   const categoryName = categories.find((c) => c.id === values.categoryId)?.name ?? "";
+  const mainSlug = categories.find((c) => c.id === values.categoryId)?.slug;
   const scheduled = values.status === "PUBLISHED" && !!values.publishAt && now > 0 && new Date(values.publishAt).getTime() > now;
   const keyPointCount = values.keyPoints.split("\n").filter((p) => p.trim()).length;
 
@@ -855,6 +861,34 @@ export default function ArticleForm({
                   </option>
                 ))}
               </select>
+              <fieldset className="mt-3">
+                <legend className="text-xs font-semibold text-muted">Also show on</legend>
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {categories
+                    .filter((c) => c.slug && c.id !== values.categoryId)
+                    .map((c) => {
+                      const on = values.alsoIn.includes(c.slug!);
+                      return (
+                        <label
+                          key={c.id}
+                          className={cn(
+                            "flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ring-1 transition-colors",
+                            on ? "bg-night text-white ring-night" : "bg-white text-ink/75 ring-line hover:ring-ink"
+                          )}
+                        >
+                          <input
+                            type="checkbox"
+                            className="sr-only"
+                            checked={on}
+                            onChange={() => update("alsoIn", on ? values.alsoIn.filter((s) => s !== c.slug) : [...values.alsoIn, c.slug!])}
+                          />
+                          {on ? "✓ " : "+ "}
+                          {c.name}
+                        </label>
+                      );
+                    })}
+                </div>
+              </fieldset>
             </div>
             <div>
               <label htmlFor="f-author" className={label}>

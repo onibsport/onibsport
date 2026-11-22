@@ -27,6 +27,7 @@ function toArticle(row: ArticleWithCategory): Article {
     title: row.title,
     dek: row.dek,
     category: row.category.slug as CategorySlug,
+    alsoIn: (row.alsoIn ?? []) as CategorySlug[],
     author: row.author,
     publishedAt: (row.publishedAt ?? row.createdAt).toISOString(),
     updatedAt: row.updatedAt.toISOString(),
@@ -86,7 +87,8 @@ export async function getFeaturedArticles(limit = 6): Promise<Article[]> {
 export async function getArticlesByCategory(slug: string, limit = 40): Promise<Article[]> {
   try {
     const rows = await prisma.article.findMany({
-      where: { ...live(), category: { slug } },
+      // Its own stories, plus stories from other hubs ticked to also show here.
+      where: { AND: [live(), { OR: [{ category: { slug } }, { alsoIn: { has: slug } }] }] },
       include: { category: true },
       orderBy: { publishedAt: "desc" },
       take: limit,

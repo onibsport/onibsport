@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { DEFAULT_AUTHOR } from "@/lib/config";
 import { ensureCategories } from "@/lib/data/ensureCategories";
 import { prisma } from "@/lib/prisma";
 import { getSourceQueue } from "@/lib/ai/alerts";
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
       image: draft.sourceImage ?? `/placeholders/${imageSeed}.jpg`,
       imageAlt: draft.imageAlt || draft.title,
       coverImage: draft.sourceImage ?? `/covers/${imageSeed}-cover.jpg`,
-      author: "Onibsport AI Desk",
+      author: DEFAULT_AUTHOR,
       source: draft.sourceOutlet,
       tags: draft.tags,
       keyPoints: draft.keyPoints,
@@ -70,6 +71,7 @@ export async function POST(request: NextRequest) {
       shareText: (draft.social && imageTextFrom(draft.social)) || null,
       status: "PENDING_REVIEW",
       categoryId: category.id,
+      alsoIn: (draft.alsoIn ?? []).filter((s) => s !== category.slug),
     },
   });
 

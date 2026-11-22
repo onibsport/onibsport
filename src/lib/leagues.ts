@@ -84,6 +84,15 @@ export const leagueThemes: Record<CategorySlug, LeagueTheme> = {
     blurb: "Every matchday from the Nigeria Professional Football League.",
     hasTable: true,
   },
+  "african-football": {
+    deep: "#4a2106",
+    tint: "#ffc13b",
+    onTint: "#1f1300",
+    crest: "AF",
+    region: "Africa",
+    blurb: "AFCON, the CAF competitions and awards, and Africa's stars at home and abroad.",
+    hasTable: false,
+  },
   transfers: {
     deep: "#2e2103",
     tint: "#fbb03b",

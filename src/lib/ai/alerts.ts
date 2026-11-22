@@ -32,6 +32,7 @@ const HUB_BY_KEYWORD: [RegExp, string][] = [
   [/bundesliga|bayern|dortmund|leverkusen/i, "bundesliga"],
   [/\bnpfl\b|enyimba|rivers united|remo stars|kano pillars/i, "npfl"],
   [/super eagles|super falcons|nigeria|osimhen|lookman/i, "nigeria-football"],
+  [/\bcaf\b|afcon|africa cup|african|africa\b|bafana|black stars|pharaohs|atlas lions|lions of teranga|indomitable lions|elephants|ghana|senegal|egypt|morocco|cameroon|ivory coast|cote d'ivoire|algeria|tunisia|south africa|al ahly|zamalek|mamelodi sundowns|esperance|wydad|salah|hakimi|kudus/i, "african-football"],
   [/transfer|signing/i, "transfers"],
 ];
 

@@ -35,10 +35,10 @@ export default function BioLinks() {
   }
 
   return (
-    <section aria-labelledby="bio-links" className="rounded-2xl bg-white p-5 ring-1 ring-line">
+    <section aria-labelledby="bio-links" className="bg-white p-5 shadow-[6px_6px_0_var(--color-ink)] ring-2 ring-ink">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 id="bio-links" className="flex items-center gap-2 font-display text-2xl font-black text-ink">
+          <h2 id="bio-links" className="flex items-center gap-2 font-display text-[28px] font-black uppercase leading-none text-ink">
             <LinkSimple size={22} weight="bold" className="text-indigo" aria-hidden="true" />
             Your bio link
           </h2>
@@ -51,7 +51,7 @@ export default function BioLinks() {
           href="/links"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 rounded-full bg-night px-4 py-2 text-sm font-bold text-white hover:bg-indigo"
+          className="flex items-center gap-1.5 border-2 border-ink bg-ink px-4 py-2 text-sm font-bold uppercase tracking-wide text-paper hover:bg-transparent hover:text-ink"
         >
           <ArrowSquareOut size={16} weight="bold" aria-hidden="true" />
           Open the page
@@ -63,7 +63,7 @@ export default function BioLinks() {
             <button
               type="button"
               onClick={() => copy(id)}
-              className="flex w-full cursor-pointer items-center gap-3 rounded-xl bg-paper px-3 py-2.5 text-left ring-1 ring-line hover:ring-ink"
+              className="flex w-full cursor-pointer items-center gap-3 border-2 border-dashed border-ink/30 bg-paper px-3 py-2.5 text-left transition-colors hover:border-solid hover:border-ink"
             >
               <Icon size={20} weight="fill" className="shrink-0 text-ink" aria-hidden="true" />
               <span className="min-w-0 flex-1">

@@ -1,58 +1,36 @@
-"use client";
-
 import { Article } from "@/lib/types";
-import { getCategory } from "@/lib/data/categories";
-import { WorksWheel } from "@/components/ui/works-wheel";
 import ArticleCard from "@/components/ArticleCard";
+import SectionHeading from "@/components/SectionHeading";
 import SwipeRow from "@/components/ui/SwipeRow";
-import { useMediaQuery } from "@/lib/useMediaQuery";
-import { optimizedSrc } from "@/lib/imageUrl";
+import DealIn from "@/components/fx/gsap/DealIn";
 
 /**
- * Editor's picks as a turnable wheel on large screens with a mouse or
- * trackpad (scroll or drag to turn, arrow keys work too). Touch devices get
- * a swipe row instead, so the wheel never traps vertical page scrolling.
+ * Editor's picks as a row of collector cards: each story framed like a
+ * trading card in its league's colours, tilted a little this way and that,
+ * straightening when you point at it. Swipe or scroll sideways.
  */
+const TILTS = ["-rotate-2", "rotate-1", "-rotate-1", "rotate-2"];
+
 export default function EditorsPicks({ articles }: { articles: Article[] }) {
-  const wheel = useMediaQuery("(min-width: 1024px) and (pointer: fine)");
   if (articles.length === 0) return null;
 
   return (
-    <section aria-labelledby="picks-title" className="py-14">
+    <section aria-labelledby="picks-title" className="programme-paper py-14">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <h2 id="picks-title" className="font-display text-4xl font-black leading-none text-ink sm:text-5xl">
-            Editor&apos;s picks
-          </h2>
-          {wheel && <p className="text-sm text-muted">Scroll or drag over the wheel to turn it. Click a title to jump.</p>}
-        </div>
+        <SectionHeading id="picks-title" title="Editor's picks" />
+        <p className="mt-4 text-sm font-semibold text-muted">The stories our editors would keep. Swipe through the collection.</p>
       </div>
-      {wheel ? (
-        <div className="mx-auto mt-6 h-[min(82vh,760px)] max-w-[1400px] px-6">
-          <WorksWheel
-            className="rounded-3xl bg-white"
-            label="Editor's picks"
-            action="Read"
-            items={articles.map((a) => ({
-              id: a.slug,
-              title: a.title,
-              image: optimizedSrc(a.image || a.coverImage, 828),
-              href: `/article/${a.slug}`,
-              kicker: getCategory(a.category)?.name,
-            }))}
-          />
-        </div>
-      ) : (
-        <div className="mx-auto mt-6 max-w-[1400px] px-4 sm:px-6">
-          <SwipeRow label="Editor's picks">
-            {articles.map((a) => (
-              <div key={a.slug} className="w-[78%] shrink-0 snap-start sm:w-[40%] lg:w-[30%]">
+      <DealIn className="mx-auto mt-8 max-w-[1400px] px-4 sm:px-6">
+        <SwipeRow label="Editor's picks">
+          {articles.map((a, i) => (
+            <div key={a.slug} data-deal="" className="w-[76%] shrink-0 snap-start px-1 py-4 sm:w-[44%] lg:w-[26%]">
+              <div className={`${TILTS[i % TILTS.length]} transition-transform duration-500 hover:rotate-0`}>
                 <ArticleCard article={a} size="overlay" />
               </div>
-            ))}
-          </SwipeRow>
-        </div>
-      )}
+            </div>
+          ))}
+        </SwipeRow>
+      </DealIn>
     </section>
   );
 }

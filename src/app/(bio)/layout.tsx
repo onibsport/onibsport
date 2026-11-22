@@ -31,14 +31,14 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#120a33",
+  themeColor: "#f3f4f8",
 };
 
 export default function BioLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${shoulders.variable} ${archivo.variable} h-full antialiased`}>
-      {/* Inline so it beats the site-wide body colours in globals.css (and overscroll stays dark). */}
-      <body className="min-h-full" style={{ background: "#120a33", color: "#ffffff" }}>
+      {/* Inline so it beats the site-wide body colours in globals.css (and overscroll stays paper). */}
+      <body className="min-h-full" style={{ background: "#f3f4f8", color: "#15122a" }}>
         {children}
         <Analytics />
         <PointerFx />

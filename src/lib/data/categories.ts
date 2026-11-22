@@ -8,6 +8,7 @@ export const categories: Category[] = [
   { slug: "champions-league", name: "Champions League", shortName: "UCL", accent: "indigo" },
   { slug: "nigeria-football", name: "Nigeria Football", shortName: "Nigeria", accent: "sky" },
   { slug: "npfl", name: "NPFL", shortName: "NPFL", accent: "orange" },
+  { slug: "african-football", name: "African Football", shortName: "Africa", accent: "gold" },
   { slug: "transfers", name: "Transfers", shortName: "Transfers", accent: "gold" },
   { slug: "world-football", name: "World Football", shortName: "World", accent: "sky" },
 ];

@@ -16,7 +16,7 @@ const NAV = [
   { href: "/admin/analytics", label: "Analytics", Icon: ChartBar, exact: true },
 ];
 
-/** Sidebar links on desktop, a scrolling pill row on small screens. */
+/** Sidebar tabs on desktop, a scrolling row on small screens; the open page has an orange tab edge. */
 export default function AdminNav({ pendingCount, horizontal = false }: { pendingCount: number; horizontal?: boolean }) {
   const pathname = usePathname();
   const isActive = (href: string, exact: boolean) =>
@@ -32,14 +32,14 @@ export default function AdminNav({ pendingCount, horizontal = false }: { pending
             href={href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex shrink-0 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors",
-              active ? "bg-white text-ink" : "text-white/70 hover:bg-white/10 hover:text-white"
+              "flex shrink-0 items-center gap-3 border-l-4 px-3 py-2.5 text-sm font-bold uppercase tracking-[0.04em] transition-colors",
+              active ? "border-orange bg-white text-ink" : "border-transparent text-white/70 hover:bg-white/10 hover:text-white"
             )}
           >
             <Icon size={20} weight={active ? "fill" : "bold"} aria-hidden="true" className={active ? "text-indigo" : undefined} />
             {label}
             {href === "/admin" && pendingCount > 0 && (
-              <span className="ml-auto rounded-full bg-orange px-2 py-0.5 text-xs font-bold text-ink" aria-label={`${pendingCount} waiting for review`}>
+              <span className="ml-auto bg-orange px-2 py-0.5 font-display text-sm font-black text-ink" aria-label={`${pendingCount} waiting for review`}>
                 {pendingCount}
               </span>
             )}

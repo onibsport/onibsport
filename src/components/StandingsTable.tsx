@@ -1,6 +1,7 @@
 import { StandingRow } from "@/lib/types";
 import Crest from "@/components/ui/Crest";
 import { cn } from "@/lib/utils";
+import CountUp from "@/components/reactbits/CountUp";
 import { resolveZones, zonesFor, type TableZone } from "@/lib/tableZones";
 
 type Ranked = StandingRow & { points: number; goalDiff: number; position: number };
@@ -58,7 +59,7 @@ export default function StandingsTable({
   const bandFor = (position: number) => bands.find((z) => position >= z.from && position <= z.to);
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-line">
+    <div className="overflow-hidden bg-white ring-2 ring-ink">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[560px] text-sm">
           <caption className="sr-only">League table, ranked by points then goal difference</caption>
@@ -192,7 +193,9 @@ export function MiniTable({ rows, limit = 6, accent = "#2d1b69" }: { rows: Stand
             </th>
             <td className="py-2 text-center tabular-nums text-ink/70">{r.played}</td>
             <td className="py-2 text-center tabular-nums text-ink/70">{gd(r.goalDiff)}</td>
-            <td className="py-2 text-right font-display text-base font-black tabular-nums text-ink">{r.points}</td>
+            <td className="py-2 text-right font-display text-base font-black tabular-nums text-ink">
+              <CountUp to={r.points} duration={1.2} />
+            </td>
           </tr>
         ))}
       </tbody>

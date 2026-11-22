@@ -6,6 +6,7 @@ export type CategorySlug =
   | "champions-league"
   | "nigeria-football"
   | "npfl"
+  | "african-football"
   | "transfers"
   | "world-football";
 
@@ -25,6 +26,8 @@ export interface Article {
   title: string;
   dek: string;
   category: CategorySlug;
+  /** Other league pages the story also shows on. */
+  alsoIn?: CategorySlug[];
   author: string;
   publishedAt: string;
   /** Last edit, for search engines. */
