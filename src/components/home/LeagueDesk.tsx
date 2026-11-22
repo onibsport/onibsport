@@ -38,10 +38,10 @@ export default function LeagueDesk({ desks }: { desks: DeskData[] }) {
   }
 
   return (
-    <section aria-labelledby={`${baseId}-title`} className="py-14">
+    <section aria-labelledby={`${baseId}-title`} className="programme-paper py-14">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <h2 id={`${baseId}-title`} className="font-display text-4xl font-black leading-none text-ink sm:text-5xl">
+          <h2 id={`${baseId}-title`} className="font-display text-[40px] font-black uppercase leading-[0.85] text-ink sm:text-[60px]">
             League desk
           </h2>
           <div role="tablist" aria-label="Choose a league" className="no-scrollbar -mx-4 flex gap-1.5 overflow-x-auto px-4 sm:mx-0 sm:px-0">
@@ -60,8 +60,8 @@ export default function LeagueDesk({ desks }: { desks: DeskData[] }) {
                   onClick={() => setActive(d.slug)}
                   onKeyDown={(e) => onKeyDown(e, i)}
                   className={cn(
-                    "flex shrink-0 cursor-pointer items-center gap-2 rounded-full py-1.5 pl-1.5 pr-4 text-sm font-bold transition-colors",
-                    selected ? "text-white" : "bg-white text-ink/75 ring-1 ring-line hover:text-ink"
+                    "flex shrink-0 cursor-pointer items-center gap-2 border-2 py-1.5 pl-1.5 pr-4 text-sm font-black uppercase tracking-wide transition-colors",
+                    selected ? "border-ink text-white" : "border-dashed border-ink/40 bg-paper text-ink/75 hover:border-ink hover:text-ink"
                   )}
                   style={selected ? { background: t.deep } : undefined}
                 >
@@ -77,7 +77,7 @@ export default function LeagueDesk({ desks }: { desks: DeskData[] }) {
           id={`${baseId}-panel`}
           role="tabpanel"
           aria-labelledby={`${baseId}-tab-${desk.slug}`}
-          className="relative mt-6 overflow-hidden rounded-3xl"
+          className="relative mt-8 overflow-hidden border-2 border-ink shadow-[8px_8px_0_0_var(--color-ink)]"
           style={{ background: theme.deep }}
         >
           <div className="pitch-lines pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
@@ -100,7 +100,7 @@ export default function LeagueDesk({ desks }: { desks: DeskData[] }) {
                   <Link
                     key={a.slug}
                     href={`/article/${a.slug}`}
-                    className="group flex gap-3 rounded-2xl bg-white/[0.07] p-3 ring-1 ring-white/10 transition-colors hover:bg-white/[0.12]"
+                    className="group flex gap-3 border-b-2 border-dashed border-white/20 px-1 py-3 transition-colors hover:bg-white/[0.06]"
                   >
                     <span className="min-w-0 flex-1">
                       <span className="line-clamp-3 font-display text-[21px] font-extrabold leading-[1.05] text-white">{a.title}</span>
@@ -109,16 +109,16 @@ export default function LeagueDesk({ desks }: { desks: DeskData[] }) {
                 ))}
                 <Link
                   href={`/category/${desk.slug}`}
-                  className="mt-auto inline-flex w-fit items-center rounded-full px-5 py-2.5 text-sm font-bold transition-transform hover:scale-[1.03]"
+                  className="mt-auto inline-flex w-fit items-center border-2 border-ink px-5 py-2.5 text-sm font-black uppercase tracking-wide shadow-[4px_4px_0_0_var(--color-ink)] transition-transform hover:-translate-y-0.5"
                   style={{ background: theme.tint, color: theme.onTint }}
                 >
                   Open the {category?.name} hub
                 </Link>
               </div>
               {desk.standings && desk.standings.length > 0 ? (
-                <div className="rounded-2xl bg-white p-4">
+                <div className="bg-white p-4 ring-2 ring-ink">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-display text-2xl font-black text-ink">Table</h3>
+                    <h3 className="font-display text-2xl font-black uppercase text-ink">Table</h3>
                     <Link href={`/category/${desk.slug}#table`} className="text-sm font-bold text-indigo hover:text-sky-dark">
                       Full table
                     </Link>

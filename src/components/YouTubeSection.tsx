@@ -37,18 +37,18 @@ export default function YouTubeSection({ videos, featured }: { videos: SiteVideo
       <div className="pitch-stripes pointer-events-none absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-[1400px] px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <h2 id="videos-title" className="font-display text-4xl font-black leading-none sm:text-5xl">
+          <h2 id="videos-title" className="font-display text-[48px] font-black uppercase leading-[0.85] sm:text-[72px]">
             Watch
           </h2>
           <div className="flex flex-wrap gap-2">
-            <Link href="/videos" className="rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white ring-1 ring-white/20 transition-colors hover:bg-white hover:text-ink">
+            <Link href="/videos" className="border-2 border-dashed border-white/50 px-4 py-2 text-sm font-black uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-ink">
               All videos
             </Link>
             <a
               href={YOUTUBE_CHANNEL_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-bold text-ink transition-colors hover:bg-orange"
+              className="flex items-center gap-2 border-2 border-white bg-white px-4 py-2 text-sm font-black uppercase tracking-wide text-ink transition-colors hover:bg-orange"
             >
               <YoutubeLogo size={18} weight="fill" className="text-[#ff0033]" aria-hidden="true" />
               Our YouTube channel
@@ -62,7 +62,7 @@ export default function YouTubeSection({ videos, featured }: { videos: SiteVideo
               <button
                 type="button"
                 onClick={() => setPlaying({ src: withAutoplay(featured.featuredVideoUrl!), title: featured.title })}
-                className="group relative block aspect-video w-full cursor-pointer overflow-hidden rounded-3xl bg-night-2"
+                className="group relative block aspect-video w-full -rotate-[0.6deg] cursor-pointer overflow-hidden border-[10px] border-white bg-night-2 shadow-[0_30px_60px_-30px_rgb(0_0_0_/_0.8)] transition-transform hover:rotate-0"
                 aria-label={`Play video: ${featured.title}`}
               >
                 <NewsImage
@@ -82,7 +82,7 @@ export default function YouTubeSection({ videos, featured }: { videos: SiteVideo
               <p className="mt-2 max-w-2xl text-white/70">{featured.dek}</p>
               <Link
                 href={`/article/${featured.slug}`}
-                className="mt-4 inline-flex rounded-full bg-white/10 px-5 py-2.5 text-sm font-bold ring-1 ring-white/20 hover:bg-white hover:text-ink"
+                className="mt-4 inline-flex border-2 border-white px-5 py-2.5 text-sm font-black uppercase tracking-wide hover:bg-white hover:text-ink"
               >
                 Read the full story
               </Link>
@@ -94,7 +94,7 @@ export default function YouTubeSection({ videos, featured }: { videos: SiteVideo
               const source = playSource(video);
               const inner = (
                 <>
-                  <span className={`relative block aspect-video w-full shrink-0 overflow-hidden rounded-2xl bg-night-2 ${hasFeature ? "sm:w-44" : ""}`}>
+                  <span className={`relative block aspect-video w-full shrink-0 overflow-hidden border-[5px] border-white bg-night-2 ${hasFeature ? "sm:w-44" : ""}`}>
                     <NewsImage
                       src={video.thumbnail}
                       alt=""
@@ -113,7 +113,7 @@ export default function YouTubeSection({ videos, featured }: { videos: SiteVideo
                   </span>
                 </>
               );
-              const cls = `group flex w-full cursor-pointer flex-col gap-3 rounded-2xl p-2 text-left transition-colors hover:bg-white/5 ${hasFeature ? "sm:flex-row sm:items-center" : ""}`;
+              const cls = `group flex w-full cursor-pointer flex-col gap-3 border-b-2 border-dashed border-white/15 p-2 pb-4 text-left transition-colors hover:bg-white/5 ${hasFeature ? "sm:flex-row sm:items-center" : ""}`;
               return (
                 <li key={video.id}>
                   {source ? (

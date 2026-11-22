@@ -8,18 +8,28 @@ import NewsImage from "@/components/ui/NewsImage";
 import ViewTransition, { storyPhotoName } from "@/components/fx/ViewTransition";
 import { cn } from "@/lib/utils";
 
+/**
+ * Story cards in the matchday-programme style: square print corners, photos
+ * set in a thin frame of the league's kit colour, labels in tracked capitals
+ * with a kit-colour diamond, and "Breaking" as a tilted stamp.
+ */
+
 type Size = "default" | "compact" | "large" | "row" | "overlay";
 
 function Kicker({ article, onDark = false }: { article: Article; onDark?: boolean }) {
   const category = getCategory(article.category);
   if (article.isBreaking) {
-    return <span className="inline-flex rounded-md bg-orange px-2 py-0.5 text-xs font-bold text-ink">Breaking</span>;
+    return (
+      <span className="inline-flex -rotate-2 border-2 border-orange-deep bg-orange px-1.5 py-0.5 text-[10px] font-black uppercase tracking-[0.12em] text-ink">
+        Breaking
+      </span>
+    );
   }
   if (!category) return null;
   const theme = leagueTheme(category.slug);
   return (
-    <span className={cn("inline-flex items-center gap-1.5 text-xs font-bold", onDark ? "text-white/85" : "text-ink/70")}>
-      <span aria-hidden="true" className="h-2.5 w-2.5 rounded-[3px]" style={{ background: onDark ? theme.tint : theme.deep }} />
+    <span className={cn("inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em]", onDark ? "text-white/80" : "text-ink/60")}>
+      <span aria-hidden="true" className="h-2 w-2 rotate-45" style={{ background: onDark ? theme.tint : theme.deep }} />
       {category.name}
     </span>
   );
@@ -27,7 +37,7 @@ function Kicker({ article, onDark = false }: { article: Article; onDark?: boolea
 
 function Meta({ article, onDark = false }: { article: Article; onDark?: boolean }) {
   return (
-    <p className={cn("text-xs", onDark ? "text-white/60" : "text-muted")}>
+    <p className={cn("text-[11px] font-semibold uppercase tracking-[0.1em]", onDark ? "text-white/55" : "text-muted")}>
       <TimeAgo iso={article.publishedAt} />
     </p>
   );
@@ -36,10 +46,19 @@ function Meta({ article, onDark = false }: { article: Article; onDark?: boolean 
 function VideoBadge({ article }: { article: Article }) {
   if (!article.featuredVideoUrl) return null;
   return (
-    <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-night/80 px-2 py-1 text-[11px] font-bold text-white backdrop-blur">
-      <PlayCircle size={14} weight="fill" className="text-orange" aria-hidden="true" />
+    <span className="absolute left-3 top-3 z-[1] flex items-center gap-1 bg-ink px-2 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-white">
+      <PlayCircle size={13} weight="fill" className="text-orange" aria-hidden="true" />
       Video
     </span>
+  );
+}
+
+/** A photo set in a frame of the league's kit colour. */
+function Framed({ article, className, children }: { article: Article; className?: string; children: React.ReactNode }) {
+  return (
+    <div className={cn("relative", className)} style={{ background: leagueTheme(article.category).deep }}>
+      {children}
+    </div>
   );
 }
 
@@ -59,12 +78,14 @@ export default function ArticleCard({
   if (size === "compact") {
     return (
       <Link href={href} className={cn("group flex gap-3", className)}>
-        <div className="relative h-[68px] w-[96px] shrink-0 overflow-hidden rounded-lg bg-line">
-          <NewsImage src={article.image} focus={article.imageFocus} alt={article.imageAlt} fill sizes="96px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-        </div>
+        <Framed article={article} className="h-[68px] w-[96px] shrink-0 p-[3px]">
+          <div className="relative h-full w-full overflow-hidden bg-line">
+            <NewsImage src={article.image} focus={article.imageFocus} alt={article.imageAlt} fill sizes="96px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+          </div>
+        </Framed>
         <div className="min-w-0">
           <Kicker article={article} />
-          <h3 className="mt-1 line-clamp-2 text-[15px] font-semibold leading-snug text-ink transition-colors group-hover:text-indigo">
+          <h3 className="mt-1 line-clamp-2 font-display text-[18px] font-extrabold leading-[1.05] text-ink">
             <span className="link-draw">{article.title}</span>
           </h3>
         </div>
@@ -77,41 +98,51 @@ export default function ArticleCard({
       <Link href={href} className={cn("group grid grid-cols-[minmax(0,1fr)_120px] gap-4 sm:grid-cols-[minmax(0,1fr)_220px] sm:gap-6", className)}>
         <div className="min-w-0">
           <Kicker article={article} />
-          <h3 className="mt-1.5 font-display text-[22px] font-extrabold leading-[1.05] text-ink transition-colors group-hover:text-indigo sm:text-[28px]">
+          <h3 className="mt-2 font-display text-[24px] font-black leading-[0.98] text-ink sm:text-[32px]">
             <span className="link-draw">{article.title}</span>
           </h3>
           <div className="hidden sm:block">
-            <p className="mt-2 line-clamp-2 text-[15px] leading-relaxed text-muted">{article.dek}</p>
+            <p className="mt-2 line-clamp-2 text-[15px] leading-relaxed text-ink/70">{article.dek}</p>
           </div>
           <div className="mt-2">
             <Meta article={article} />
           </div>
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-line">
-          <NewsImage src={article.image} focus={article.imageFocus} alt={article.imageAlt} fill sizes="(min-width: 640px) 220px, 120px" className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
-          <VideoBadge article={article} />
-        </div>
+        <Framed article={article} className="self-start p-1 transition-transform duration-500 group-hover:-rotate-1">
+          <div className="relative aspect-[4/3] overflow-hidden bg-line">
+            <NewsImage src={article.image} focus={article.imageFocus} alt={article.imageAlt} fill sizes="(min-width: 640px) 220px, 120px" className="object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+            <VideoBadge article={article} />
+          </div>
+        </Framed>
       </Link>
     );
   }
 
   if (size === "overlay") {
+    // A collector card: white border like a trading card, the story's kit colour as the name band.
+    const theme = leagueTheme(article.category);
     return (
-      <Link href={href} data-tilt="5" data-spot="" data-cursor="Read story" className={cn("group shine relative block overflow-hidden rounded-2xl bg-night", className)}>
-        <div className="relative aspect-[4/5] w-full sm:aspect-[3/4]">
+      <Link
+        href={href}
+        data-tilt="5"
+        data-spot=""
+        data-cursor="Read story"
+        className={cn("group relative block bg-white p-2 shadow-[0_24px_50px_-28px_rgb(18_10_51_/_0.7)] ring-1 ring-ink/10", className)}
+      >
+        <div className="relative aspect-[4/5] w-full overflow-hidden bg-night sm:aspect-[3/4]">
           <NewsImage
-            src={article.image} focus={article.imageFocus}
+            src={article.image}
+            focus={article.imageFocus}
             alt={article.imageAlt}
             fill
             priority={priority}
             sizes="(min-width: 1024px) 33vw, 100vw"
             className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-night via-night/30 to-transparent" />
           <VideoBadge article={article} />
-          <div className="absolute inset-x-0 bottom-0 p-5">
+          <div className="absolute inset-x-0 bottom-0 p-4 pt-10 text-white" style={{ background: `linear-gradient(0deg, ${theme.deep} 0%, ${theme.deep} 55%, transparent 100%)` }}>
             <Kicker article={article} onDark />
-            <h3 className="mt-2 font-display text-[26px] font-extrabold leading-[1.02] text-white">{article.title}</h3>
+            <h3 className="mt-1.5 font-display text-[24px] font-black leading-[0.98]">{article.title}</h3>
             <div className="mt-2">
               <Meta article={article} onDark />
             </div>
@@ -124,31 +155,31 @@ export default function ArticleCard({
   if (size === "large") {
     return (
       <Link href={href} className={cn("group block", className)}>
-        {/* The lead photo opens like a curtain as it scrolls in, and grows into the article when opened. */}
         <ViewTransition name={storyPhotoName(article.slug)} share="morph" default="none">
-          <div data-cursor="Read story" className="sd-curtain relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-line">
-            <div className="sd-zoom-out absolute inset-0">
+          <Framed article={article} className="-rotate-[0.8deg] p-2 shadow-[0_30px_60px_-34px_rgb(18_10_51_/_0.7)] transition-transform duration-500 group-hover:rotate-0 sm:p-3">
+            <div data-cursor="Read story" className="relative aspect-[16/10] w-full overflow-hidden bg-line">
               <NewsImage
-                src={article.image} focus={article.imageFocus}
+                src={article.image}
+                focus={article.imageFocus}
                 alt={article.imageAlt}
                 fill
                 priority={priority}
                 sizes="(min-width: 1024px) 60vw, 100vw"
                 className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
               />
+              <VideoBadge article={article} />
             </div>
-            <VideoBadge article={article} />
-          </div>
+          </Framed>
         </ViewTransition>
-        <div className="mt-4">
+        <div className="mt-5">
           <Kicker article={article} />
-          <h2 className="mt-2 font-display text-[34px] font-black leading-[0.98] text-ink transition-colors group-hover:text-indigo sm:text-[44px]">
+          <h2 className="mt-2 font-display text-[38px] font-black leading-[0.9] tracking-[-0.01em] text-ink sm:text-[56px]">
             <span className="link-draw">{article.title}</span>
           </h2>
-          <p className="mt-3 max-w-2xl text-[16px] leading-relaxed text-muted">{article.dek}</p>
-          <p className="mt-3 text-xs text-muted">
-            <span className="font-semibold text-ink/80">{article.author}</span>
-            <span className="mx-1.5" aria-hidden="true">
+          <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-ink/70">{article.dek}</p>
+          <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.14em] text-muted">
+            <span className="text-ink/80">{article.author}</span>
+            <span className="mx-2" aria-hidden="true">
               /
             </span>
             <TimeAgo iso={article.publishedAt} />
@@ -160,20 +191,23 @@ export default function ArticleCard({
 
   return (
     <Link href={href} className={cn("group block", className)}>
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-line">
-        <NewsImage
-          src={article.image} focus={article.imageFocus}
-          alt={article.imageAlt}
-          fill
-          priority={priority}
-          sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-        />
-        <VideoBadge article={article} />
-      </div>
+      <Framed article={article} className="p-1 transition-transform duration-500 group-hover:-rotate-1">
+        <div className="relative aspect-[16/10] w-full overflow-hidden bg-line">
+          <NewsImage
+            src={article.image}
+            focus={article.imageFocus}
+            alt={article.imageAlt}
+            fill
+            priority={priority}
+            sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+          />
+          <VideoBadge article={article} />
+        </div>
+      </Framed>
       <div className="mt-3">
         <Kicker article={article} />
-        <h3 className="mt-1.5 line-clamp-3 font-display text-[23px] font-extrabold leading-[1.04] text-ink transition-colors group-hover:text-indigo">
+        <h3 className="mt-1.5 line-clamp-3 font-display text-[24px] font-black leading-[1] text-ink">
           <span className="link-draw">{article.title}</span>
         </h3>
         <div className="mt-1.5">

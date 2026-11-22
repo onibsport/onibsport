@@ -84,23 +84,25 @@ export default async function Home() {
       </div>
 
       {river.length > 0 && (
-        <section aria-labelledby="latest-title" className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
+        <section aria-labelledby="latest-title" className="programme-paper">
+          <div className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
           <SectionHeading id="latest-title" title="Latest" href="/search" linkLabel="Search the archive" />
-          <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px]">
-            <div>
+          <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-0">
+            <div className="lg:border-r-2 lg:border-dashed lg:border-ink/25 lg:pr-10">
               {riverLead && <ArticleCard article={riverLead} size="large" />}
-              <div className="mt-10 divide-y divide-line border-t border-line">
+              <div className="mt-12 divide-y-2 divide-dashed divide-ink/20 border-t-2 border-ink">
                 {riverRest.slice(0, 6).map((article) => (
-                  <div key={article.slug} className="py-6">
+                  <div key={article.slug} className="py-7">
                     <ArticleCard article={article} size="row" />
                   </div>
                 ))}
               </div>
             </div>
-            <div className="space-y-6 lg:sticky lg:top-36 lg:self-start">
+            <div className="space-y-6 lg:sticky lg:top-36 lg:self-start lg:pl-10">
               <TrendingSidebar articles={trending} />
               <AdSlot placement="home-sidebar" />
             </div>
+          </div>
           </div>
         </section>
       )}
@@ -120,12 +122,16 @@ export default async function Home() {
       <WeekInPictures articles={latest} />
 
       {moreStories.length > 0 && (
-        <section aria-labelledby="more-title" className="mx-auto max-w-[1400px] px-4 py-14 sm:px-6">
-          <SectionHeading id="more-title" title="More stories" />
-          <div className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-            {moreStories.map((article) => (
-              <ArticleCard key={article.slug} article={article} />
-            ))}
+        <section aria-labelledby="more-title" className="programme-paper">
+          <div className="mx-auto max-w-[1400px] px-4 py-14 sm:px-6">
+            <SectionHeading id="more-title" title="More stories" />
+            <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+              {moreStories.map((article) => (
+                <div key={article.slug} className="border-t-2 border-dashed border-ink/25 pt-5">
+                  <ArticleCard article={article} />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}

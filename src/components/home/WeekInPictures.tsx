@@ -18,8 +18,8 @@ export default function WeekInPictures({ articles }: { articles: Article[] }) {
       <StackSpread
         items={items}
         scrollLength={280}
-        bgColor="#120a33"
-        textColor="#ffffff"
+        bgColor="#f3f4f8"
+        textColor="#15122a"
         cardRadius={14}
         title={"The week\nin pictures"}
         subtitle="Every frame links to its story. Hover a photo to read the headline."
