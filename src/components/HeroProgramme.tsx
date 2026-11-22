@@ -24,12 +24,19 @@ export default function HeroProgramme({ articles, dateLabel }: { articles: Artic
     <section aria-label="Cover story" className="programme-paper relative overflow-hidden text-ink">
       <div className="mx-auto max-w-[1400px] px-4 pt-6 sm:px-6">
         {/* Masthead */}
-        <div className="load-in flex items-center justify-between gap-4 border-b-2 border-ink pb-2 text-xs font-bold uppercase tracking-[0.14em]" style={{ "--i": 0 } as React.CSSProperties}>
+        {/* On phones it stays on one line: shorter spacing, and the year is dropped from the date. */}
+        <div
+          className="load-in flex items-center justify-between gap-3 whitespace-nowrap border-b-2 border-ink pb-2 text-[10px] font-bold uppercase tracking-[0.08em] sm:gap-4 sm:text-xs sm:tracking-[0.14em]"
+          style={{ "--i": 0 } as React.CSSProperties}
+        >
           <span>Matchday edition</span>
-          <span className="hidden sm:inline">Football news with an African lens</span>
-          <span className="flex items-center gap-3">
-            {dateLabel}
-            <LiveClock />
+          <span className="hidden lg:inline">Football news with an African lens</span>
+          <span className="flex items-center gap-2 sm:gap-3">
+            <span>
+              {dateLabel.replace(/\s\d{4}$/, "")}
+              <span className="hidden sm:inline">{dateLabel.match(/\s\d{4}$/)?.[0]}</span>
+            </span>
+            <LiveClock className="whitespace-nowrap text-[13px] sm:text-[15px]" />
           </span>
         </div>
         <p
