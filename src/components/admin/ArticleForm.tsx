@@ -26,6 +26,7 @@ import SocialCardPreview from "@/components/admin/SocialCardPreview";
 import FocalPointPicker from "@/components/admin/FocalPointPicker";
 import { hasCustomShareImage } from "@/lib/shareImage";
 import { cn } from "@/lib/utils";
+import { isOwnPhotoHost } from "@/lib/imageUrl";
 
 /** Stories should be at least this long before they're published. */
 const MIN_WORDS = 400;
@@ -108,7 +109,7 @@ function slugify(value: string) {
 function isExternalImage(src: string) {
   if (!src || src.startsWith("/")) return false;
   try {
-    return !new URL(src).hostname.endsWith(".public.blob.vercel-storage.com");
+    return !isOwnPhotoHost(new URL(src).hostname);
   } catch {
     return false;
   }

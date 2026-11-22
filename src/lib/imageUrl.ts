@@ -16,12 +16,26 @@ export const FALLBACK_PHOTO = "/covers/default-cover.jpg";
 /** Widths the image optimizer accepts (the default deviceSizes in next.config). */
 type OptimizedWidth = 640 | 750 | 828 | 1080 | 1200 | 1920;
 
-/** True for images the optimizer is allowed to fetch: this site's own files and Vercel Blob uploads. */
+/** The R2 bucket's public host, e.g. pub-xxxx.r2.dev (from NEXT_PUBLIC_R2_PUBLIC_URL). */
+const R2_HOST = (() => {
+  try {
+    return process.env.NEXT_PUBLIC_R2_PUBLIC_URL ? new URL(process.env.NEXT_PUBLIC_R2_PUBLIC_URL).hostname : "";
+  } catch {
+    return "";
+  }
+})();
+
+/** True for photos we store ourselves: Vercel Blob (older uploads) or Cloudflare R2 (new uploads). */
+export function isOwnPhotoHost(hostname: string): boolean {
+  return hostname.endsWith(".public.blob.vercel-storage.com") || hostname.endsWith(".r2.dev") || (!!R2_HOST && hostname === R2_HOST);
+}
+
+/** True for images the optimizer is allowed to fetch: this site's own files and our stored uploads. */
 export function isOptimizable(src: unknown): boolean {
   if (typeof src !== "string") return true;
   if (src.startsWith("/")) return !src.startsWith("/_next/image");
   try {
-    return new URL(src).hostname.endsWith(".public.blob.vercel-storage.com");
+    return isOwnPhotoHost(new URL(src).hostname);
   } catch {
     return false;
   }
