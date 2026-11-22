@@ -748,3 +748,78 @@ html.intro-seen .ticket-intro {
     display: none;
   }
 }
+
+/* ==========================================================================
+   Broadcast pieces kept from Direction A: the match centre (score bugs,
+   LIVE strap, segment strap) and the on-air clock in the masthead.
+   ========================================================================== */
+.bc-tags {
+  display: inline-flex;
+  align-items: stretch;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+.bc-tags > span {
+  display: flex;
+  align-items: center;
+  padding: 7px 10px;
+}
+.bc-tags > span:last-child {
+  padding-right: 18px;
+}
+.bc-cut {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  padding-right: calc(0.5rem + 10px) !important;
+}
+.bc-score {
+  display: grid;
+  min-width: 1.7em;
+  place-items: center;
+  border-radius: 6px;
+  padding: 0.08em 0.3em 0.04em;
+  background: rgb(255 255 255 / 0.08);
+}
+.bc-score[data-live] {
+  background: var(--color-orange);
+  color: var(--color-ink);
+}
+.bc-strap {
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+}
+.bc-strap-tab {
+  width: 12px;
+  flex: none;
+  background: var(--color-orange);
+}
+.bc-strap-plate {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0.16em calc(0.55em + 14px) 0.12em 0.45em;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sd-wipe-in {
+      animation: sd-wipe-in linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 30%;
+    }
+  }
+}
+@keyframes sd-wipe-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}

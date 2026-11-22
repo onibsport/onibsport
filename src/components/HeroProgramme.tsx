@@ -4,6 +4,7 @@ import { Article } from "@/lib/types";
 import { getCategory } from "@/lib/data/categories";
 import { leagueTheme } from "@/lib/leagues";
 import TimeAgo from "@/components/ui/TimeAgo";
+import LiveClock from "@/components/ui/LiveClock";
 import NewsImage from "@/components/ui/NewsImage";
 import ViewTransition, { storyPhotoName } from "@/components/fx/ViewTransition";
 
@@ -26,7 +27,10 @@ export default function HeroProgramme({ articles, dateLabel }: { articles: Artic
         <div className="load-in flex items-center justify-between gap-4 border-b-2 border-ink pb-2 text-xs font-bold uppercase tracking-[0.14em]" style={{ "--i": 0 } as React.CSSProperties}>
           <span>Matchday edition</span>
           <span className="hidden sm:inline">Football news with an African lens</span>
-          <span>{dateLabel}</span>
+          <span className="flex items-center gap-3">
+            {dateLabel}
+            <LiveClock />
+          </span>
         </div>
         <p
           aria-hidden="true"
