@@ -14,7 +14,7 @@ import EditorsPicks from "@/components/home/EditorsPicks";
 import WeekInPictures from "@/components/home/WeekInPictures";
 import {
   getLatestArticles,
-  getFeaturedArticles,
+  getFeaturedArticles, getPinnedCover,
   getArticlesByCategory,
   getFeaturedVideoArticle,
 } from "@/lib/data/db-articles";
@@ -32,10 +32,11 @@ function editionDate() {
 const DESK_LEAGUES: CategorySlug[] = ["premier-league", "la-liga", "serie-a", "bundesliga", "champions-league", "npfl"];
 
 export default async function Home() {
-  const [latest, featured, nigeriaFootball, npfl, transferArticles, videoArticle, scoreboard, naijaFixtures, npflFixtures, deskArticles, deskTables, videos] =
+  const [latest, featured, pinned, nigeriaFootball, npfl, transferArticles, videoArticle, scoreboard, naijaFixtures, npflFixtures, deskArticles, deskTables, videos] =
     await Promise.all([
       getLatestArticles(30),
       getFeaturedArticles(10),
+      getPinnedCover(),
       getArticlesByCategory("nigeria-football", 6),
       getArticlesByCategory("npfl", 6),
       getArticlesByCategory("transfers", 10),
@@ -48,17 +49,17 @@ export default async function Home() {
       getPublishedVideos(4),
     ]);
 
-  // Articles marked "Feature on homepage" in the admin get priority for the hero
-  // and Editor's Picks, while staying listed under their own category too.
-  // Featured stories lead (breaking first); the latest stories fill any remaining slots.
-  const featuredSlugs = new Set(featured.map((a) => a.slug));
-  const heroPool = [...[...featured].sort((a, b) => Number(!!b.isBreaking) - Number(!!a.isBreaking)), ...latest.filter((a) => !featuredSlugs.has(a.slug))];
-  const heroSlides = heroPool.slice(0, 4);
+  // The cover is the story pinned in the admin ("Pin as cover"), otherwise the newest
+  // story; the next newest fill "In this edition". Editor's picks are only the stories
+  // ticked "Editor's pick". Every story also stays in Latest and on its league page.
+  const cover = pinned ?? latest[0];
+  const heroSlides = cover ? [cover, ...latest.filter((a) => a.slug !== cover.slug)].slice(0, 4) : [];
   const heroSlugs = new Set(heroSlides.map((a) => a.slug));
-  const river = latest.filter((a) => !heroSlugs.has(a.slug));
+  // Latest shows every new story straight away (only the cover itself is left out).
+  const river = latest.filter((a) => a.slug !== cover?.slug);
   const [riverLead, ...riverRest] = river;
   const trending = latest.slice(0, 6);
-  const editorsPicks = heroPool.filter((a) => !heroSlugs.has(a.slug)).slice(0, 8);
+  const editorsPicks = featured.filter((a) => a.slug !== cover?.slug).slice(0, 8);
   const moreStories = river.slice(7, 15);
 
   const nigeriaArticles = [...nigeriaFootball, ...npfl].sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt)).slice(0, 5);

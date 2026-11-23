@@ -41,7 +41,10 @@ model Article {
   source           String?
   tags             String        @default("")
   isBreaking       Boolean       @default(false)
+  /// Shown in Editor's picks on the homepage.
   featured         Boolean       @default(false)
+  /// Kept as the homepage cover instead of the newest story (the newest pinned story wins).
+  pinnedCover      Boolean       @default(false)
   featuredVideoUrl String?
   status           ArticleStatus @default(DRAFT)
   categoryId       String

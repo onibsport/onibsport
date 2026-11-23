@@ -62,6 +62,7 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
             tags: article.tags,
             isBreaking: article.isBreaking,
             featured: article.featured,
+            pinnedCover: article.pinnedCover,
             featuredVideoUrl: article.featuredVideoUrl ?? "",
             status: article.status,
             // A story waiting for its time shows its schedule; a live one keeps its time unless changed.

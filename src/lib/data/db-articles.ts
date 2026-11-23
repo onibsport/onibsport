@@ -50,6 +50,7 @@ function toArticle(row: ArticleWithCategory): Article {
       .filter(Boolean),
     isBreaking: row.isBreaking,
     featured: row.featured,
+    pinnedCover: row.pinnedCover,
     featuredVideoUrl: row.featuredVideoUrl ?? undefined,
     source: row.source ?? undefined,
     status: "published",
@@ -67,6 +68,20 @@ export async function getLatestArticles(limit = 12): Promise<Article[]> {
     return rows.map(toArticle);
   } catch {
     return [];
+  }
+}
+
+/** The story pinned as the homepage cover, if any (the newest pinned one). */
+export async function getPinnedCover(): Promise<Article | undefined> {
+  try {
+    const row = await prisma.article.findFirst({
+      where: { ...live(), pinnedCover: true },
+      include: { category: true },
+      orderBy: { publishedAt: "desc" },
+    });
+    return row ? toArticle(row) : undefined;
+  } catch {
+    return undefined;
   }
 }
 

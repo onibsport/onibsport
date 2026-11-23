@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { articleInputSchema } from "@/lib/validation/article";
-import { afterArticleSaved, articleData } from "@/lib/articleSave";
+import { afterArticleSaved, articleData, keepOnePinnedCover } from "@/lib/articleSave";
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -28,6 +28,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   }
 
   const article = await prisma.article.update({ where: { id }, data: articleData(data, existing) });
+  if (article.pinnedCover) await keepOnePinnedCover(article.id);
   afterArticleSaved();
   return NextResponse.json({ article });
 }
