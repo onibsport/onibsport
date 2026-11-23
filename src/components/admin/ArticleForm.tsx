@@ -87,6 +87,7 @@ export interface ArticleFormValues {
   tags: string;
   isBreaking: boolean;
   featured: boolean;
+  pinnedCover: boolean;
   featuredVideoUrl: string;
   status: "DRAFT" | "PENDING_REVIEW" | "PUBLISHED";
   /** ISO time a published story goes live; blank = now (or keep its current time). */
@@ -165,6 +166,7 @@ export default function ArticleForm({
       tags: "",
       isBreaking: false,
       featured: false,
+      pinnedCover: false,
       featuredVideoUrl: "",
       status: "DRAFT",
       publishAt: "",
@@ -924,7 +926,12 @@ export default function ArticleForm({
                 title: "Breaking news",
                 help: "Shows the Breaking label and the site-wide alert, and sends a push alert to readers who turned them on.",
               },
-              { key: "featured" as const, title: "Feature on the homepage", help: "Puts it in the hero slideshow and Editor's picks. It stays on its hub too." },
+              { key: "featured" as const, title: "Editor's pick", help: "Shows it in Editor's picks on the homepage. It stays in Latest and on its league page too." },
+              {
+                key: "pinnedCover" as const,
+                title: "Pin as cover",
+                help: "Keeps it as the big cover story at the top of the homepage instead of the newest story. Pinning it unpins any other story.",
+              },
             ].map((o) => (
               <label key={o.key} className="flex cursor-pointer gap-3 rounded-xl p-2 hover:bg-paper">
                 <input

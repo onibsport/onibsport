@@ -38,12 +38,19 @@ export function articleData(data: ArticleInput, existing?: Pick<Article, "publis
     tags: data.tags || "",
     isBreaking: !!data.isBreaking,
     featured: !!data.featured,
+    pinnedCover: !!data.pinnedCover,
     featuredVideoUrl: data.featuredVideoUrl || null,
     status: data.status,
     categoryId: data.categoryId,
     alsoIn: [...new Set(data.alsoIn ?? [])],
     publishedAt: publishedAt(data, existing),
   };
+}
+
+/** Only one story is pinned as the cover: pinning this one unpins the rest. */
+export async function keepOnePinnedCover(id: string) {
+  const { prisma } = await import("@/lib/prisma");
+  await prisma.article.updateMany({ where: { pinnedCover: true, id: { not: id } }, data: { pinnedCover: false } });
 }
 
 /** After a story is saved or published: send the breaking-news alert if one is due (after the response, so saving stays fast). */

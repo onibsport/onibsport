@@ -24,6 +24,7 @@ export const articleInputSchema = z.object({
   tags: z.string().max(300).optional().or(z.literal("")),
   isBreaking: z.boolean().optional(),
   featured: z.boolean().optional(),
+  pinnedCover: z.boolean().optional(),
   featuredVideoUrl: z.string().max(500).optional().or(z.literal("")),
   status: z.enum(["DRAFT", "PENDING_REVIEW", "PUBLISHED"]),
   /** When a published story goes live (ISO date). Blank = now; a future date schedules it. */

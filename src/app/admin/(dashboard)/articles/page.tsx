@@ -15,7 +15,7 @@ const FILTERS = [
 
 const FLAGS = [
   { value: "", label: "Any placement" },
-  { value: "featured", label: "Featured" },
+  { value: "featured", label: "Editor's picks" },
   { value: "breaking", label: "Breaking" },
 ] as const;
 

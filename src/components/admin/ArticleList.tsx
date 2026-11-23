@@ -31,8 +31,8 @@ type Action = "publish" | "draft" | "feature" | "unfeature" | "unbreak" | "move"
 const ACTIONS: { value: Action; label: string }[] = [
   { value: "publish", label: "Publish" },
   { value: "draft", label: "Move to drafts" },
-  { value: "feature", label: "Feature on homepage" },
-  { value: "unfeature", label: "Remove from homepage" },
+  { value: "feature", label: "Make editor's pick" },
+  { value: "unfeature", label: "Remove from editor's picks" },
   { value: "unbreak", label: "Clear Breaking label" },
   { value: "move", label: "Move to hub…" },
   { value: "delete", label: "Delete" },
@@ -168,7 +168,7 @@ export default function ArticleList({ articles, categories, emptyText }: { artic
               <div className="flex flex-wrap items-center gap-2">
                 <StatusBadge status={article.status} scheduled={article.scheduled} />
                 <span className="text-xs font-semibold text-muted">{article.hub}</span>
-                {article.featured && <span className="text-xs font-bold text-indigo">Featured</span>}
+                {article.featured && <span className="text-xs font-bold text-indigo">Editor&apos;s pick</span>}
                 {article.isBreaking && <span className="text-xs font-bold text-orange-deep">Breaking</span>}
               </div>
               <Link href={`/admin/articles/${article.id}`} className="mt-1 line-clamp-1 block font-semibold text-ink hover:text-indigo">

@@ -45,6 +45,8 @@ export interface Article {
   tags: string[];
   isBreaking?: boolean;
   featured?: boolean;
+  /** Kept as the homepage cover. */
+  pinnedCover?: boolean;
   featuredVideoUrl?: string;
   source?: string;
   status: ArticleStatus;
