@@ -47,15 +47,19 @@ export async function uploadToR2(file: File, folder = "articles"): Promise<strin
   });
   const key = objectKey(folder, file.name);
   const endpoint = `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${process.env.R2_BUCKET}/${key}`;
-  const res = await client.fetch(endpoint, {
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  // Sign first, then send the bytes ourselves: a signed Request object carries its body as a
+  // stream, which goes out without a Content-Length, and R2 refuses that (411 MissingContentLength).
+  const signed = await client.sign(endpoint, {
     method: "PUT",
-    body: await file.arrayBuffer(),
+    body: bytes,
     headers: {
       "Content-Type": file.type || "application/octet-stream",
       // Safe to cache for a year: an upload's address never points at different content.
       "Cache-Control": "public, max-age=31536000, immutable",
     },
   });
+  const res = await fetch(signed.url, { method: "PUT", headers: signed.headers, body: bytes });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     const code = text.match(/<Code>([^<]+)<\/Code>/)?.[1];
