@@ -261,7 +261,7 @@ export default async function LinksPage({ searchParams }: { searchParams: Promis
 
         <footer className="mt-12 border-t-2 border-dashed border-ink/25 pt-4 text-center text-[11px] font-bold uppercase tracking-[0.16em] text-muted">
           <Link href={track("/")} className="hover:text-ink">
-            onibsport.com
+            onibsport.com.ng
           </Link>
         </footer>
       </main>

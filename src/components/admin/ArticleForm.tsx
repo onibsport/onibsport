@@ -1050,7 +1050,7 @@ export default function ArticleForm({
             )}
             {preview === "search" && (
               <div className="font-[arial,sans-serif]">
-                <p className="text-xs text-[#4d5156]">onibsport.com › article › {values.slug || "your-story"}</p>
+                <p className="text-xs text-[#4d5156]">onibsport.com.ng › article › {values.slug || "your-story"}</p>
                 <p className="mt-1 line-clamp-1 text-xl leading-snug text-[#1a0dab]">{(values.title || "Your headline") + " | Onibsport"}</p>
                 <p className="mt-1 line-clamp-2 text-sm text-[#4d5156]">{values.dek || "Your standfirst appears here as the description."}</p>
               </div>
