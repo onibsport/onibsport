@@ -94,7 +94,7 @@ export async function fetchSourceArticle(url: string): Promise<SourceArticle> {
     const res = await fetch(url, {
       signal: controller.signal,
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; OnibsportBot/1.0; +https://onibsport.com/about)",
+        "User-Agent": "Mozilla/5.0 (compatible; OnibsportBot/1.0; +https://www.onibsport.com.ng)",
         Accept: "text/html",
       },
     });

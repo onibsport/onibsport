@@ -143,7 +143,7 @@ export default function SocialCardPreview({ image, title, dek }: { image: string
         </div>
         {shape === "link" && (
           <div className="bg-paper p-3">
-            <p className="text-xs uppercase text-muted">onibsport.com</p>
+            <p className="text-xs uppercase text-muted">onibsport.com.ng</p>
             <p className="mt-0.5 line-clamp-2 font-semibold text-ink">{title || "Your headline"}</p>
             <p className="mt-0.5 line-clamp-1 text-sm text-muted">{dek}</p>
           </div>

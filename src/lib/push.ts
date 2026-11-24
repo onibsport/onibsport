@@ -18,7 +18,7 @@ export function pushEnabled() {
 function subject() {
   if (process.env.VAPID_SUBJECT) return process.env.VAPID_SUBJECT;
   const site = process.env.SITE_URL ?? "";
-  return site.startsWith("https://") ? site : "https://onibsport-pq46.vercel.app";
+  return site.startsWith("https://") ? site : "https://www.onibsport.com.ng";
 }
 
 function siteUrl() {
