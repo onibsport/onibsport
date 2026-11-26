@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { isOptimizable } from "@/lib/imageUrl";
 
 /**
  * Onibsport's share card, drawn as a PNG, matching the house template: the
@@ -56,7 +57,12 @@ async function loadImage(src: string, origin: string): Promise<string | null> {
   try {
     const url = new URL(src, origin);
     if (url.protocol !== "https:" && url.origin !== origin) return null;
-    const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });
+    // Our own photos come through the image optimizer at card width (as JPEG), not as the
+    // full-size original: much faster, and the finished card is far smaller.
+    const viaOptimizer = isOptimizable(src) && !src.endsWith(".svg");
+    const target = viaOptimizer ? new URL(`/_next/image?url=${encodeURIComponent(src)}&w=1200&q=80`, origin) : url;
+    let res = await fetch(target, { headers: { Accept: "image/jpeg,image/png" }, signal: AbortSignal.timeout(8_000) });
+    if (viaOptimizer && !res.ok) res = await fetch(url, { signal: AbortSignal.timeout(8_000) });
     const type = res.headers.get("content-type") ?? "";
     if (!res.ok || !/image\/(jpe?g|png|gif)/.test(type)) return null;
     const buffer = await res.arrayBuffer();

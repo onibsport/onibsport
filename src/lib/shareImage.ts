@@ -27,7 +27,7 @@ export function shareTextFor(story: Pick<ShareableStory, "title" | "shareText">)
 /** A short fingerprint of what the card shows, so networks fetch a fresh card after an edit. */
 function version(story: ShareableStory): string {
   let h = 5381;
-  for (const ch of `t2|${shareTextFor(story)}|${story.image}|${story.imageFocus ?? ""}`) h = ((h << 5) + h + ch.charCodeAt(0)) >>> 0;
+  for (const ch of `t3|${shareTextFor(story)}|${story.image}|${story.imageFocus ?? ""}`) h = ((h << 5) + h + ch.charCodeAt(0)) >>> 0;
   return h.toString(36);
 }
 
